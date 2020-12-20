@@ -36,7 +36,7 @@ async def create_new_todo(todo_description: str):
 
 
 # Alternative to above with request body:
-@app.post("/api")
+# @app.post("/api")
 # async def create_new_todo(request: Request) -> List[Dict[str, str]]:
 #     """
 #     Example with accessing request body.

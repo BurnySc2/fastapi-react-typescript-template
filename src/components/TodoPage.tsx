@@ -15,6 +15,14 @@ function TodoPage(props: any) {
                 if (response.ok) {
                     return response.json()
                 }
+                // TODO Better error handling when server is offline
+                else
+                    return [
+                        {
+                            id: 0,
+                            content: "SERVER ERROR",
+                        },
+                    ]
             })
             .then((data) => {
                 setTodo(data)
@@ -24,44 +32,24 @@ function TodoPage(props: any) {
     let submitPressed = () => {
         let requestOptions = {
             method: "POST",
-            header: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 new_todo: newTodo,
             }),
         }
         fetch("/api/create", requestOptions)
-            .then((response) => {
-                if (response.ok) {
-                    console.log("create response", response)
-                }
-            })
-            .then((data) => {
-                console.log("received create", data)
-                // Update todos list
-                getTodos()
-            })
+        getTodos()
     }
 
     let removeTodo = (id: number) => {
         console.log("Removing todo:", id)
         let requestOptions = {
             method: "DELETE",
-            header: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 remove_todo_id: id,
             }),
         }
         fetch("/api/delete", requestOptions)
-            .then((response) => {
-                if (response.ok) {
-                    console.log("remove response", response)
-                }
-            })
-            .then((data) => {
-                console.log("received remove", data)
-                // Update todos list
-                getTodos()
-            })
+        getTodos()
     }
 
     return (

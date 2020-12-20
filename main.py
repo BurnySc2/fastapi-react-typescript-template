@@ -1,16 +1,14 @@
 from sanic import Sanic
 from sanic.response import text, json, file, file_stream
 from sanic.request import Request
-import sqlite3
 from loguru import logger
 
+import sqlite3
 import os
 from pathlib import Path
 
 app = Sanic("App Name")
 db = None
-
-""" TodoList example """
 
 
 @app.get("/api/get")

@@ -14,11 +14,15 @@ poetry install
 npm install
 ```
 
-# Run
+# Development
 
 ```
 npm run start
 poetry run python main.py
+```
+Or to autorestart backend server:
+```
+poetry run uvicorn main:app --reload
 ```
 
 # Deploy
@@ -33,10 +37,6 @@ Launch the backend on a server
 pip install poetry --user
 poetry install
 poetry run python main.py
-```
-Or to autorestart backend server:
-```
-poetry run uvicorn main:app --reload
 ```
 
 

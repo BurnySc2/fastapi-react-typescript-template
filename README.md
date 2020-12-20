@@ -1,59 +1,65 @@
-# sanic-template
+# sanic-react-typescript-template
 
 # Requirement
 
-Python 3.7 or newer
+- Python 3.7 or newer 
+- Node.js
 
 # Installation
 
+Install node and python 3.7+
 ```
 pip install poetry --user
 poetry install
+npm install
 ```
 
 # Run
 
 ```
+npm run start
 poetry run python main.py
 ```
 
-# TODO
+# Deploy
 
-## Get requests
+Create the front end and host it somewhere (e.g. github pages)
+```
+npm run build
+```
 
-[x] Return plain text
+Launch the backend on a server
+```
+pip install poetry --user
+poetry install
+poetry run python main.py
+```
 
-[x] Return json
+# Functionality
 
-[x] Return html (display text)
+## Requests
 
-Return html (display table)
+[x] Communicate between front and backend
 
-Return html (display interactive graph)
+[ ] Accept file download (sent via backend)
 
-[x] Return file (file download?)
+[ ] Accept file upload
 
-[x] Return file streaming (file download?)
+[ ] User register
 
-## Post requests (?)
+[ ] User login
 
-#### Upload
-
-Accept file upload
-
-#### Database interaction (mongoDB?)
-
-User register
-
-User login
-
-Use cookies to store login? https://sanic.readthedocs.io/en/latest/sanic/cookies.html
+[ ] Use cookies to store login? https://sanic.readthedocs.io/en/latest/sanic/cookies.html
 
 # Tests
 
-How to test a webserver?
+[ ] How to test a webserver?
 
+# Autoformatting
 
-
+```
+npx prettier --write "**/*.tsx"
+black --line-length 120 .
+```
 
 

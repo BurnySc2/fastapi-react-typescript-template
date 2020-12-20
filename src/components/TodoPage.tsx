@@ -10,7 +10,7 @@ function TodoPage(props: any) {
     }, [])
 
     let getTodos = () => {
-        fetch("/api/get")
+        fetch("/api")
             .then((response) => {
                 if (response.ok) {
                     return response.json()
@@ -36,20 +36,16 @@ function TodoPage(props: any) {
                 new_todo: newTodo,
             }),
         }
-        fetch("/api/create", requestOptions)
+        fetch("/api", requestOptions)
         setNewTodo("")
         getTodos()
     }
 
     let removeTodo = (id: number) => {
-        console.log("Removing todo:", id)
         let requestOptions = {
             method: "DELETE",
-            body: JSON.stringify({
-                remove_todo_id: id,
-            }),
         }
-        fetch("/api/delete", requestOptions)
+        fetch(`/api/${id}`, requestOptions)
         getTodos()
     }
 

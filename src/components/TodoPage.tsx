@@ -3,7 +3,7 @@ import Card from "./Card"
 
 function TodoPage(props: any) {
     const [newTodo, setNewTodo] = useState("")
-    const [todo, setTodo] = useState([])
+    const [todos, setTodos] = useState([])
 
     useEffect(() => {
         getTodos()
@@ -25,7 +25,7 @@ function TodoPage(props: any) {
                     ]
             })
             .then((data) => {
-                setTodo(data)
+                setTodos(data)
             })
     }
 
@@ -37,6 +37,7 @@ function TodoPage(props: any) {
             }),
         }
         fetch("/api/create", requestOptions)
+        setNewTodo("")
         getTodos()
     }
 
@@ -67,7 +68,7 @@ function TodoPage(props: any) {
                     Submit
                 </button>
             </div>
-            <Card listOfTodos={todo} removeTodo={removeTodo} />
+            <Card listOfTodos={todos} removeTodo={removeTodo} />
         </div>
     )
 }

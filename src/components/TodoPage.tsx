@@ -32,11 +32,16 @@ function TodoPage(props: any) {
     let submitPressed = () => {
         let requestOptions = {
             method: "POST",
-            body: JSON.stringify({
-                new_todo: newTodo,
-            }),
         }
-        fetch("/api", requestOptions)
+        fetch(`/api/${newTodo}`, requestOptions)
+        // When using request body:
+        // let requestOptions = {
+        //     method: "POST",
+        //     body: JSON.stringify({
+        //         new_todo: newTodo,
+        //     }),
+        // }
+        // fetch("/api", requestOptions)
         setNewTodo("")
         getTodos()
     }
@@ -58,9 +63,10 @@ function TodoPage(props: any) {
                     onChange={(e) => {
                         setNewTodo(e.target.value)
                     }}
-                    className="border-2"
+                    placeholder="My new todo item"
+                    className="border-2 my-2 mx-1"
                 />
-                <button onClick={submitPressed} className="border-2">
+                <button onClick={submitPressed} className="border-2 my-2 mx-1">
                     Submit
                 </button>
             </div>

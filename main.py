@@ -5,6 +5,7 @@ from loguru import logger
 import sqlite3
 import os
 from pathlib import Path
+from typing import List, Dict
 
 app = FastAPI()
 db: sqlite3.Connection = None
@@ -16,7 +17,7 @@ def hello_world():
 
 
 @app.get("/api")
-async def show_all_todos():
+async def show_all_todos() -> List[Dict[str, str]]:
     todos = []
     for row in db.execute("SELECT id, task FROM todos"):
         todos.append(
@@ -25,15 +26,29 @@ async def show_all_todos():
     return todos
 
 
-@app.post("/api")
-async def create_new_todo(request: Request):
-    """ Example with accessing request body. """
-    json_response = await request.json()
-    todo_item = json_response.get("new_todo", None)
-    if todo_item:
-        logger.info(f"Attempting to insert new todo: {todo_item}")
-        db.execute("INSERT INTO todos (task) VALUES (?)", [todo_item])
+@app.post("/api/{todo_description}")
+async def create_new_todo(todo_description: str):
+    # https://fastapi.tiangolo.com/advanced/using-request-directly/
+    if todo_description:
+        logger.info(f"Attempting to insert new todo: {todo_description}")
+        db.execute("INSERT INTO todos (task) VALUES (?)", [todo_description])
         db.commit()
+
+
+# Alternative to above with request body:
+@app.post("/api")
+# async def create_new_todo(request: Request) -> List[Dict[str, str]]:
+#     """
+#     Example with accessing request body.
+#     Send a request with body {"new_todo": "<todo task description>"}
+#     """
+#     # https://fastapi.tiangolo.com/advanced/using-request-directly/
+#     json_response = await request.json()
+#     todo_item = json_response.get("new_todo", None)
+#     if todo_item:
+#         logger.info(f"Attempting to insert new todo: {todo_item}")
+#         db.execute("INSERT INTO todos (task) VALUES (?)", [todo_item])
+#         db.commit()
 
 
 @app.delete("/api/{todo_id}")

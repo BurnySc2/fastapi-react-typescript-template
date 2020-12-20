@@ -33,15 +33,23 @@ function TodoPage(props: any) {
         let requestOptions = {
             method: "POST",
         }
-        fetch(`/api/${newTodo}`, requestOptions)
+        /*
+        To add optional search params, use:
+        let params = new URLSearchParams("")
+        params.set("mykey", "myvalue")
+        fetch(`/api/${newTodo}?` + params.toString(), requestOptions)
+         */
         // When using request body:
-        // let requestOptions = {
-        //     method: "POST",
-        //     body: JSON.stringify({
-        //         new_todo: newTodo,
-        //     }),
-        // }
-        // fetch("/api", requestOptions)
+        /*
+        let requestOptions = {
+            method: "POST",
+            body: JSON.stringify({
+                new_todo: newTodo,
+            }),
+        }
+        fetch("/api", requestOptions)
+         */
+        fetch(`/api/${newTodo}`, requestOptions)
         setNewTodo("")
         getTodos()
     }

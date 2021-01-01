@@ -1,38 +1,32 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import Card from "./Card"
+
+const idkContext = React.createContext({ myValue: "Click me!" })
 
 function TodoPage(props: any) {
     const [newTodo, setNewTodo] = useState("")
     const [todos, setTodos] = useState([])
 
+    // Context variable example
+    let idkVariable = useContext(idkContext)
+
     useEffect(() => {
         getTodos()
     }, [])
 
-    let getTodos = () => {
-        fetch("/api")
-            .then((response) => {
-                if (response.ok) {
-                    return response.json()
-                }
-                // TODO Better error handling when server is offline
-                else
-                    return [
-                        {
-                            id: 0,
-                            content: "SERVER ERROR",
-                        },
-                    ]
-            })
-            .then((data) => {
-                setTodos(data)
-            })
+    let getTodos = async () => {
+        let response = await fetch("/api")
+        if (response.ok) {
+            setTodos(await response.json())
+        } else {
+            // @ts-ignore
+            setTodos([{ id: 0, content: "SERVER ERROR" }])
+        }
     }
 
-    let submitPressed = () => {
-        let requestOptions = {
-            method: "POST",
-        }
+    let submitPressed = async () => {
+        idkVariable["myValue"] =
+            idkVariable["myValue"] === "Value changed!" ? "Click me!" : "Value changed!"
         /*
         To add optional search params, use:
         let params = new URLSearchParams("")
@@ -49,17 +43,18 @@ function TodoPage(props: any) {
         }
         fetch("/api", requestOptions)
          */
-        fetch(`/api/${newTodo}`, requestOptions)
+        await fetch(`/api/${newTodo}`, {
+            method: "POST",
+        })
         setNewTodo("")
-        getTodos()
+        await getTodos()
     }
 
-    let removeTodo = (id: number) => {
-        let requestOptions = {
+    let removeTodo = async (id: number) => {
+        await fetch(`/api/${id}`, {
             method: "DELETE",
-        }
-        fetch(`/api/${id}`, requestOptions)
-        getTodos()
+        })
+        await getTodos()
     }
 
     return (
@@ -75,7 +70,7 @@ function TodoPage(props: any) {
                     className="border-2 my-2 mx-1"
                 />
                 <button onClick={submitPressed} className="border-2 my-2 mx-1">
-                    Submit
+                    Submit {idkVariable["myValue"]}
                 </button>
             </div>
             <Card listOfTodos={todos} removeTodo={removeTodo} />

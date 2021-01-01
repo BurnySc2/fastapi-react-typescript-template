@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import Card from "./Card"
 import ContextConsumer from "./ContextConsumer"
 import { ContextProvider } from "./ContextProvider"
@@ -6,9 +6,9 @@ import { ContextProvider } from "./ContextProvider"
 function TodoPage(props: any) {
     const [newTodo, setNewTodo] = useState("")
     const [todos, setTodos] = useState([])
-
     // Context variable example
     const [contextValue, setContextValue] = useState("some text")
+    console.log(contextValue)
 
     useEffect(() => {
         getTodos()

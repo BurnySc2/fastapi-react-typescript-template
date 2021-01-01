@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext } from "react"
 import { ContextProvider } from "./ContextProvider"
 
 export default function ContextConsumer(props: any) {

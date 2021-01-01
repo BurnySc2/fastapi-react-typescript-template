@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from "react"
 import Card from "./Card"
-
-const idkContext = React.createContext({ myValue: "Click me!" })
+import ContextConsumer from "./ContextConsumer"
+import { ContextProvider } from "./ContextProvider"
 
 function TodoPage(props: any) {
     const [newTodo, setNewTodo] = useState("")
     const [todos, setTodos] = useState([])
 
     // Context variable example
-    let idkVariable = useContext(idkContext)
+    const [contextValue, setContextValue] = useState("some text")
 
     useEffect(() => {
         getTodos()
@@ -25,8 +25,6 @@ function TodoPage(props: any) {
     }
 
     let submitPressed = async () => {
-        idkVariable["myValue"] =
-            idkVariable["myValue"] === "Value changed!" ? "Click me!" : "Value changed!"
         /*
         To add optional search params, use:
         let params = new URLSearchParams("")
@@ -59,6 +57,12 @@ function TodoPage(props: any) {
 
     return (
         <div className="flex flex-col">
+            <ContextProvider.Provider
+                // @ts-ignore
+                value={{ contextValue, setContextValue }}
+            >
+                <ContextConsumer />
+            </ContextProvider.Provider>
             <div className="flex flex-row">
                 <input
                     type="text"
@@ -69,12 +73,8 @@ function TodoPage(props: any) {
                     placeholder="My new todo item"
                     className="border-2 my-2 mx-1"
                 />
-                <button
-                    key={idkVariable.myValue}
-                    onClick={submitPressed}
-                    className="border-2 my-2 mx-1"
-                >
-                    Submit {idkVariable.myValue}
+                <button onClick={submitPressed} className="border-2 my-2 mx-1">
+                    Submit
                 </button>
             </div>
             <Card listOfTodos={todos} removeTodo={removeTodo} />

@@ -69,8 +69,12 @@ function TodoPage(props: any) {
                     placeholder="My new todo item"
                     className="border-2 my-2 mx-1"
                 />
-                <button onClick={submitPressed} className="border-2 my-2 mx-1">
-                    Submit {idkVariable["myValue"]}
+                <button
+                    key={idkVariable.myValue}
+                    onClick={submitPressed}
+                    className="border-2 my-2 mx-1"
+                >
+                    Submit {idkVariable.myValue}
                 </button>
             </div>
             <Card listOfTodos={todos} removeTodo={removeTodo} />

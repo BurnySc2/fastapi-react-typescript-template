@@ -21,7 +21,7 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "start": "BROWSER=none npm run tailwind:css && react-scripts start",
+    "start": "npm run tailwind:css && BROWSER=none react-scripts start",
     "watch": "npm-watch",
     "tailwind:css": "tailwind build src/tailwind.css -c tailwind.config.js -o src/index.css",
     "build": "npm run tailwind:css && react-scripts build",

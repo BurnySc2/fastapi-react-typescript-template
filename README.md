@@ -1,4 +1,4 @@
-# sanic-react-typescript-template
+# fastapi-react-typescript-template
 
 # Requirement
 
@@ -63,7 +63,7 @@ poetry run python main.py
 # Autoformatting
 
 ```
-npx prettier --write "**/*.tsx"
+npx prettier --write "src/**/*.tsx"
 black --line-length 120 .
 ```
 

@@ -21,7 +21,10 @@ async def show_all_todos() -> List[Dict[str, str]]:
     todos = []
     for row in db.execute("SELECT id, task FROM todos"):
         todos.append(
-            {"id": row[0], "content": row[1],}
+            {
+                "id": row[0],
+                "content": row[1],
+            }
         )
     return todos
 

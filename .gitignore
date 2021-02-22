@@ -155,3 +155,5 @@ yarn-error.log*
 
 /.idea
 /data
+
+src/index.css

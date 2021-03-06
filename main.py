@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI, Request
+from pydantic import BaseModel
 from loguru import logger
 
 import sqlite3
@@ -39,19 +40,38 @@ async def create_new_todo(todo_description: str):
 
 
 # Alternative to above with request body:
-# @app.post("/api")
-# async def create_new_todo(request: Request) -> List[Dict[str, str]]:
-#     """
-#     Example with accessing request body.
-#     Send a request with body {"new_todo": "<todo task description>"}
-#     """
-#     # https://fastapi.tiangolo.com/advanced/using-request-directly/
-#     json_response = await request.json()
-#     todo_item = json_response.get("new_todo", None)
-#     if todo_item:
-#         logger.info(f"Attempting to insert new todo: {todo_item}")
-#         db.execute("INSERT INTO todos (task) VALUES (?)", [todo_item])
-#         db.commit()
+@app.post("/api_body")
+async def create_new_todo(request: Request):
+    """
+    Example with accessing request body.
+    Send a request with body {"new_todo": "<todo task description>"}
+    """
+    # https://fastapi.tiangolo.com/advanced/using-request-directly/
+    json_response = await request.json()
+    todo_item = json_response.get("new_todo", None)
+    if todo_item:
+        logger.info(f"Attempting to insert new todo: {todo_item}")
+        db.execute("INSERT INTO todos (task) VALUES (?)", [todo_item])
+        db.commit()
+
+
+class Item(BaseModel):
+    todo_description: str
+
+
+# Alternative to above with model:
+@app.post("/api_model")
+async def create_new_todo(item: Item):
+    """
+    Example with accessing request body.
+    Send a request with body {"todo_description": "<todo task description>"}
+    """
+    # https://fastapi.tiangolo.com/tutorial/body/#import-pydantics-basemodel
+    logger.info(f"Received item: {item}")
+    if item and item.todo_description:
+        logger.info(f"Attempting to insert new todo: {item.todo_description}")
+        db.execute("INSERT INTO todos (task) VALUES (?)", [item.todo_description])
+        db.commit()
 
 
 @app.delete("/api/{todo_id}")

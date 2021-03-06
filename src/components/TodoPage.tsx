@@ -31,19 +31,35 @@ function TodoPage(props: any) {
         params.set("mykey", "myvalue")
         fetch(`/api/${newTodo}?` + params.toString(), requestOptions)
          */
+        await fetch(`/api/${newTodo}`, {
+            method: "POST",
+        })
+        setNewTodo("")
+        await getTodos()
+    }
+
+    let submitPressedBody = async () => {
         // When using request body:
-        /*
         let requestOptions = {
             method: "POST",
             body: JSON.stringify({
                 new_todo: newTodo,
             }),
         }
-        fetch("/api", requestOptions)
-         */
-        await fetch(`/api/${newTodo}`, {
+        fetch("/api_body", requestOptions)
+        setNewTodo("")
+        await getTodos()
+    }
+
+    let submitPressedModel = async () => {
+        // When using request body:
+        let requestOptions = {
             method: "POST",
-        })
+            body: JSON.stringify({
+                todo_description: newTodo,
+            }),
+        }
+        fetch("/api_model", requestOptions)
         setNewTodo("")
         await getTodos()
     }
@@ -75,6 +91,12 @@ function TodoPage(props: any) {
                 />
                 <button onClick={submitPressed} className="border-2 my-2 mx-1">
                     Submit
+                </button>
+                <button onClick={submitPressedBody} className="border-2 my-2 mx-1">
+                    SubmitBody
+                </button>
+                <button onClick={submitPressedModel} className="border-2 my-2 mx-1">
+                    SubmitModel
                 </button>
             </div>
             <Card listOfTodos={todos} removeTodo={removeTodo} />

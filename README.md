@@ -2,12 +2,13 @@
 
 # Requirement
 
-- Python 3.7 or newer 
-- Node.js
+-   Python 3.7 or newer
+-   Node.js
 
 # Installation
 
 Install node and python 3.7+
+
 ```
 pip install poetry --user
 poetry install
@@ -20,7 +21,9 @@ npm install
 npm run start
 poetry run python main.py
 ```
+
 Or to autorestart backend server:
+
 ```
 poetry run uvicorn main:app --reload
 ```
@@ -28,17 +31,18 @@ poetry run uvicorn main:app --reload
 # Deploy
 
 Create the front end and host it somewhere (e.g. github pages)
+
 ```
 npm run build
 ```
 
 Launch the backend on a server
+
 ```
 pip install poetry --user
 poetry install
 poetry run python main.py
 ```
-
 
 # Functionality
 
@@ -66,5 +70,3 @@ poetry run python main.py
 npx prettier --write "src/**/*.tsx"
 black --line-length 120 .
 ```
-
-

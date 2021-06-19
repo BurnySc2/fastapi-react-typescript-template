@@ -41,7 +41,7 @@ async def create_new_todo(todo_description: str):
 
 # Alternative to above with request body:
 @app.post("/api_body")
-async def create_new_todo(request: Request):
+async def create_new_todo2(request: Request):
     """
     Example with accessing request body.
     Send a request with body {"new_todo": "<todo task description>"}
@@ -61,7 +61,7 @@ class Item(BaseModel):
 
 # Alternative to above with model:
 @app.post("/api_model")
-async def create_new_todo(item: Item):
+async def create_new_todo3(item: Item):
     """
     Example with accessing request body.
     Send a request with body {"todo_description": "<todo task description>"}

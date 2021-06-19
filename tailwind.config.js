@@ -1,12 +1,13 @@
 module.exports = {
-    future: {
-        // removeDeprecatedGapUtilities: true,
-        // purgeLayersByDefault: true,
+    purge: {
+      content: [
+        "./src/**/*.{ts,tsx}",
+        ],
+        enabled: process.env.DEVELOPMENT !== "true" // disable purge in dev
     },
-    purge: [],
     theme: {
-        extend: {},
+      extend: {},
     },
     variants: {},
     plugins: [],
-}
+  };

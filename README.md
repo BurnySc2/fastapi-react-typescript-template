@@ -24,7 +24,7 @@ poetry run uvicorn main:app --reload --host 0.0.0.0 --port 5000
 
 # Deploy
 
-Create the front end and host it somewhere (e.g. github pages)
+Build the front end and host it somewhere (e.g. github pages)
 
 ```
 npm run build
@@ -58,9 +58,16 @@ poetry run uvicorn main:app --host 0.0.0.0 --port 5000
 
 [ ] How to test a webserver?
 
+
+
+# Run all pre-commit hook scripts
+`poetry run pre-commit run --all-files`
+
+This runs pylint, mypy, pytest tests, apply autoformatter yapf
+
 # Autoformatting
 
 ```
 npx prettier --write "src/**/*.tsx"
-black --line-length 120 .
+yapf ./**/*.py -i
 ```

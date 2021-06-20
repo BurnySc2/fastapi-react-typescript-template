@@ -141,6 +141,16 @@ dmypy.json
 
 # production
 /build
+/data
+
+# Pycharm
+/.idea
+
+# Vscode
+/.vscode
+
+# Tailwindcss
+src/index.css
 
 # misc
 .DS_Store
@@ -153,7 +163,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-/.idea
-/data
 
-src/index.css

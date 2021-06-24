@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, ReactElement } from "react"
 import Card from "./Card"
 import ContextConsumer from "./ContextConsumer"
 import { ContextProvider } from "./ContextProvider"
 
-function TodoPage(props: any) {
+function TodoPage(): ReactElement {
     const [newTodo, setNewTodo] = useState("")
-    const [todos, setTodos] = useState([])
+    const [todos, setTodos] = useState<{ id: number; content: string }[]>([])
     // Context variable example
     const [contextValue, setContextValue] = useState("some text")
     console.log(contextValue)
@@ -14,8 +14,8 @@ function TodoPage(props: any) {
         getTodos()
     }, [])
 
-    let getTodos = async () => {
-        let response = await fetch("/api")
+    const getTodos = async () => {
+        const response = await fetch("/api")
         if (response.ok) {
             setTodos(await response.json())
         } else {
@@ -24,7 +24,7 @@ function TodoPage(props: any) {
         }
     }
 
-    let submitPressed = async () => {
+    const submitPressed = async () => {
         /*
         To add optional search params, use:
         let params = new URLSearchParams("")
@@ -38,9 +38,9 @@ function TodoPage(props: any) {
         await getTodos()
     }
 
-    let submitPressedBody = async () => {
+    const submitPressedBody = async () => {
         // When using request body:
-        let requestOptions = {
+        const requestOptions = {
             method: "POST",
             body: JSON.stringify({
                 new_todo: newTodo,
@@ -51,9 +51,9 @@ function TodoPage(props: any) {
         await getTodos()
     }
 
-    let submitPressedModel = async () => {
+    const submitPressedModel = async () => {
         // When using request body:
-        let requestOptions = {
+        const requestOptions = {
             method: "POST",
             body: JSON.stringify({
                 todo_description: newTodo,
@@ -64,7 +64,7 @@ function TodoPage(props: any) {
         await getTodos()
     }
 
-    let removeTodo = async (id: number) => {
+    const removeTodo = async (id: number) => {
         await fetch(`/api/${id}`, {
             method: "DELETE",
         })

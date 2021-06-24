@@ -1,8 +1,8 @@
-import React, { Component } from "react"
+import React, { Component, ReactElement } from "react"
 import TodoPage from "./components/TodoPage"
 
 class App extends Component {
-    render() {
+    render(): ReactElement {
         return (
             <div>
                 <TodoPage />

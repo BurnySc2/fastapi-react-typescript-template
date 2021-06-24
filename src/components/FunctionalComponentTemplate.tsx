@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 
 export default function FunctionalComponentTemplate(props: any) {
-    let [variable, setVariable] = useState("")
+    const [variable, setVariable] = useState("")
 
-    let myFunction = () => {
+    const myFunction = () => {
         console.log("Hello world!")
     }
 

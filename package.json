@@ -1,49 +1,43 @@
 {
-    "name": "tailwind-react-template",
-    "version": "0.1.0",
-    "private": true,
-    "homepage": "./",
-    "proxy": "http://0.0.0.0:5000",
-    "dependencies": {
-        "@types/node": "^15.12.4",
-        "@types/react": "^17.0.11",
-        "@types/react-dom": "^17.0.8",
-        "npm-watch": "^0.10.0",
-        "prettier": "2.3.1",
-        "react": "^17.0.2",
-        "react-dom": "^17.0.2",
-        "react-scripts": "4.0.3",
-        "tailwindcss": "^2.2.4",
-        "typescript": "^4.3.4"
-    },
-    "scripts": {
-        "build:dev:tailwind": "DEVELOPMENT=true tailwind build -i src/tailwind.css -o src/index.css",
-		"build:prod:tailwind": "NODE_ENV=production tailwind build -i src/tailwind.css -c tailwind.config.js -o src/index.css",
-        "start": "npm run build:dev:tailwind && BROWSER=none react-scripts start",
-        "build": "npm run build:prod:tailwind && react-scripts build",
-        "test": "react-scripts test"
-    },
-    "watch": {
-        "build": {
-            "patterns": [
-                "src"
-            ],
-            "extensions": "ts,tsx,json"
-        }
-    },
-    "eslintConfig": {
-        "extends": "react-app"
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    }
+  "name": "tailwind-react-template",
+  "version": "0.1.0",
+  "private": true,
+  "homepage": "./",
+  "proxy": "http://0.0.0.0:5000",
+  "dependencies": {
+    "@types/node": "^15.12.4",
+    "@types/react": "^17.0.11",
+    "@types/react-dom": "^17.0.8",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-scripts": "4.0.3",
+    "tailwindcss": "^2.2.4",
+    "typescript": "^4.3.4"
+  },
+  "scripts": {
+    "build:dev:tailwind": "DEVELOPMENT=true tailwind build -i src/tailwind.css -o src/index.css",
+    "build:prod:tailwind": "NODE_ENV=production tailwind build -i src/tailwind.css -c tailwind.config.js -o src/index.css",
+    "start": "npm run build:dev:tailwind && BROWSER=none react-scripts start",
+    "build": "npm run build:prod:tailwind && react-scripts build",
+    "test": "react-scripts test"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.28.0",
+    "@typescript-eslint/parser": "^4.28.0",
+    "eslint": "^7.29.0",
+    "eslint-plugin-react": "^7.24.0",
+    "prettier": "2.3.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

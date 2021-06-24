@@ -1,9 +1,9 @@
-import React, { useContext } from "react"
+import React, { ReactElement, useContext } from "react"
 import { ContextProvider } from "./ContextProvider"
 
-export default function ContextConsumer(props: any) {
+export default function ContextConsumer(): ReactElement {
     // @ts-ignore
-    let { contextValue, setContextValue } = useContext(ContextProvider)
+    const { contextValue, setContextValue } = useContext(ContextProvider)
 
     console.log(contextValue)
 
@@ -12,7 +12,7 @@ export default function ContextConsumer(props: any) {
             <div>{contextValue}</div>
             <button
                 className={"p-1 border-2"}
-                onClick={(e) => {
+                onClick={() => {
                     setContextValue(contextValue === "asd" ? "dsa" : "asd")
                 }}
             >

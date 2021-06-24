@@ -19,11 +19,12 @@
         "react-redux": "^7.2.2",
         "react-scripts": "3.4.3",
         "tailwindcss": "^1.8.10",
-        "typescript": "^3.7.5"
+        "typescript": "^3.7.5",
+        "postcss-cli": "^8.3.1"
     },
     "scripts": {
-		"build:dev:tailwind": "DEVELOPMENT=true tailwind build -i src/tailwind.css -o src/index.css",
-		"build:prod:tailwind": "NODE_ENV=production postcss src/tailwind.css -o src/index.css",
+        "build:dev:tailwind": "DEVELOPMENT=true tailwind build -i src/tailwind.css -o src/index.css",
+        "build:prod:tailwind": "NODE_ENV=production postcss src/tailwind.css -o src/index.css",
         "start": "npm run build:dev:tailwind && BROWSER=none react-scripts start",
         "build": "npm run build:prod:tailwind && react-scripts build",
         "test": "react-scripts test"

@@ -68,6 +68,9 @@ poetry run pre-commit run --all-files
 
 This runs pylint, mypy, pytest tests, apply autoformatter yapf
 
+# Upgrade packages to latest major version
+`npx npm-check-updates -u`
+
 # Autoformatting
 
 ```

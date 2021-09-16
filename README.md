@@ -33,7 +33,6 @@ npm run build
 Launch the backend on a server
 
 ```
-pip install poetry --user
 poetry install
 poetry run uvicorn main:app --host 0.0.0.0 --port 5000
 ```

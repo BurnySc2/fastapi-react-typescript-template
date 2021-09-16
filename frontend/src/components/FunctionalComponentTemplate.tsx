@@ -1,11 +1,13 @@
 import React, { useState } from "react"
 
-export default function FunctionalComponentTemplate(props: any) {
+export default function FunctionalComponentTemplate(): JSX.Element {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [variable, setVariable] = useState("")
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const myFunction = () => {
         console.log("Hello world!")
     }
 
-    return <div></div>
+    return <div>Hello World</div>
 }

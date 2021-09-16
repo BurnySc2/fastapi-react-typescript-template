@@ -146,5 +146,28 @@ repos:
 #    types: [python]
 #    pass_filenames: false
 
-# FRONTEND
+# TODO integration test
 
+# FRONTEND
+- repo: local
+  hooks:
+  - id: eslint
+    name: eslint
+    stages: [commit]
+    language: system
+    entry: sh -c "cd frontend && npm run eslint"
+
+  - id: prettier
+    name: prettier
+    stages: [commit]
+    language: system
+    entry: sh -c "cd frontend && npm run format"
+
+# too cpu heavy
+#  - id: npm-build
+#    name: npm-build
+#    stages: [commit]
+#    language: system
+#    entry: sh -c "cd frontend && npm run build"
+
+# TODO test

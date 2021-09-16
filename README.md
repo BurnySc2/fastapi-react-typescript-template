@@ -1,5 +1,10 @@
 # fastapi-react-typescript-template
 
+# TODO
+- explain folder structure
+- explain each config file 
+- add docker compose for development inside docker
+
 # Requirement
 
 -   Python 3.7 or newer

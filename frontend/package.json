@@ -9,6 +9,7 @@
     "tailwind:prod": "NODE_ENV=production tailwind build -i src/tailwind.css -c tailwind.config.js -o src/index.css",
     "start": "npm run tailwind:dev && BROWSER=none react-scripts start",
     "build": "npm run tailwind:prod && react-scripts build",
+    "eslint": "npx eslint src/**/*.{ts,tsx} --max-warnings 0",
     "test": "react-scripts test",
     "update": "npx npm-check-updates -u && npm run prune",
     "prune": "rm package-lock.json -f && rm node_modules -rf && npm i",

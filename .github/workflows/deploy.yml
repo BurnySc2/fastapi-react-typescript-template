@@ -48,7 +48,7 @@ jobs:
 
     - name: Run Python tests
       run: |
-        python run pytest
+        poetry run pytest
 
     - name: Build frontend
       run: |

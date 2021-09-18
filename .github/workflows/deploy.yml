@@ -10,13 +10,13 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version: [3.7, 3.8, 3.9]
-        node: ['12']
+        node: ['12', '14', '16']
 
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: 12.x
+        node-version: ${{ matrix.node }}
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v1
@@ -28,17 +28,17 @@ jobs:
         path: ~/.cache/pypoetry/virtualenvs
         key: ${{ runner.os }}-${{ matrix.python-version }}-poetry-${{ hashFiles('poetry.lock') }}
 
-    - uses: actions/cache@v1
+    - uses: actions/cache@v2
       with:
         path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
+        key: ${{ runner.os }}-${{ matrix.node }}-node-${{ hashFiles('**/package-lock.json') }}
 
     - name: Install Python dependencies
       run: |
         python -m pip install poetry
         poetry install
+        ls -la
+        ls -la ~/.cache/pypoetry/virtualenvs
 
     - name: Install npm dependencies
       run: |

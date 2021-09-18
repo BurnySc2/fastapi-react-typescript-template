@@ -19,17 +19,45 @@ WEBSITE_ADDRESS = f'{WEBSITE_IP}:{WEBSITE_PORT}'
 WEBSERVER_PROCESS: Optional[subprocess.Popen] = None
 
 
+def generate_css_file():
+    frontend_folder = Path(__file__).parent.parent / 'frontend'
+    index_css_path = frontend_folder / 'src' / 'index.css'
+
+    # If it already exists, skip generation of file
+    # pylint: disable=R1732
+    if index_css_path.is_file():
+        return
+
+    # Start compilation of index.css
+    _tailwind_css_process = subprocess.Popen(['npm', 'run', 'tailwind:prod'], cwd=frontend_folder)
+
+    # Wait for tailwindcss to compile index.css file
+    wait_seconds = 0
+    while not index_css_path.is_file():
+        wait_seconds += 1
+        if wait_seconds > 30:
+            break
+        time.sleep(1)
+
+
 def start_frontend_dev_server():
     # pylint: disable=W0603
     global WEBSERVER_PROCESS
+
     env = os.environ.copy()
+    # Set port for dev server
     env['PORT'] = WEBSITE_PORT
     # Don't open frontend in browser
     env['BROWSER'] = 'none'
 
-    frontend_folder = Path(__file__).parent.parent / 'frontend'
     # pylint: disable=R1732
+    generate_css_file()
+
+    frontend_folder = Path(__file__).parent.parent / 'frontend'
     WEBSERVER_PROCESS = subprocess.Popen(['npx', 'react-scripts', 'start'], cwd=frontend_folder, env=env)
+
+    # Give it some time to create dev server
+    time.sleep(3)
 
 
 # pylint: disable=W0613
@@ -38,9 +66,7 @@ def setup_module(_module):
     """
     See https://docs.pytest.org/en/6.2.x/xunit_setup.html
     """
-    time.sleep(0.5)
     start_frontend_dev_server()
-    time.sleep(5)
 
 
 # pylint: disable=W0613

@@ -17,7 +17,7 @@ Install node and python 3.7+
 ```
 pip install poetry --user
 poetry install
-npm install
+cd frontend && npm install && cd ..
 ```
 
 # Development

@@ -10,7 +10,7 @@
         "start": "npm run tailwind:dev && BROWSER=none react-scripts start",
         "build": "npm run tailwind:prod && react-scripts build",
         "eslint": "npx eslint src/**/*.{ts,tsx} --max-warnings 0",
-        "test": "react-scripts test",
+        "test": "react-scripts test --watchAll=false",
         "update": "npx npm-check-updates -u && npm run prune",
         "prune": "rm package-lock.json -f && rm node_modules -rf && npm i",
         "format": "npx prettier --write \"src/**/*.{json,ts,tsx}\""
@@ -37,12 +37,15 @@
         "typescript": "^4.4.3"
     },
     "devDependencies": {
+        "@testing-library/jest-dom": "^5.14.1",
+        "@types/jest": "^27.0.1",
         "@typescript-eslint/eslint-plugin": "^4.31.1",
         "@typescript-eslint/parser": "^4.31.1",
         "eslint": "^7.32.0",
         "eslint-plugin-react": "^7.25.1",
-        "prettier": "2.4.1",
-        "npm-check-updates": "^11.8.5"
+        "jest-dom": "^4.0.0",
+        "npm-check-updates": "^11.8.5",
+        "prettier": "2.4.1"
     },
     "browserslist": {
         "production": [

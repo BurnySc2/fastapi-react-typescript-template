@@ -6,30 +6,30 @@ authors = ["BuRny <gamingburny@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.7 <3.11"
-loguru = "^0.5.3"
-fastapi = "^0.68.1"
-uvicorn = {extras = ["standard"], version = "^0.15.0"}
+loguru = "^0.5"
+fastapi = "^0.68"
+uvicorn = {extras = ["standard"], version = "^0.15"}
 
 [tool.poetry.dev-dependencies]
 # Autoformatter
-yapf = "^0.31.0"
+yapf = "^0.31"
 # Linting
-pylint = "^2.8.3"
+pylint = "^2.8"
 # Test library
-pytest = "^6.2.2"
-pytest-asyncio = "^0.15.1"
-pytest-cov = "^2.12.1"
-pytest-benchmark = "^3.4.1"
+pytest = "^6.2"
+pytest-asyncio = "^0.15"
+pytest-cov = "^2.12"
+pytest-benchmark = "^3.4"
 # Type checking
 mypy = "^0.910"
 # Requirement for pytest < 3.8
-importlib_metadata = "^1.7.0"
+importlib_metadata = "^1.7"
 # Statistical testing
-hypothesis = "^6.21.4"
+hypothesis = "^6.21"
 # Cyclomatic complexity checker
-radon = "^5.0.1"
+radon = "^5.0"
 # Enable pre commit hooks
-pre-commit = "^2.15.0"
+pre-commit = "^2.15"
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]

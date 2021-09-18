@@ -2,6 +2,7 @@
   "scripts": {
     "start": "cd frontend && npm run start",
     "build": "cd frontend && npm run build",
+    "eslint": "cd frontend && npm run eslint",
     "test": "cd frontend && npm run test",
     "update": "cd frontend && npm run update",
     "prune": "cd frontend && npm run prune",

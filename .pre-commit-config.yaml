@@ -170,4 +170,5 @@ repos:
 #    language: system
 #    entry: sh -c "cd frontend && npm run build"
 
-# TODO test
+# TODO unit test frontend
+# TODO integration test or e2e test

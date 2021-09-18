@@ -130,9 +130,9 @@ repos:
     types: [python]
     pass_filenames: false
 
-  # Run tests
-  - id: pytest
-    name: pytest
+  # Run backend tests
+  - id: pytest_backend
+    name: backend test
     stages: [commit]
     language: system
     entry: poetry run pytest backend/test
@@ -163,6 +163,12 @@ repos:
     language: system
     entry: sh -c "cd frontend && npm run format"
 
+  - id: jest_frontend_test
+    name: jest frontend test
+    stages: [commit]
+    language: system
+    entry: sh -c "cd frontend && npm run test"
+
 # too cpu heavy
 #  - id: npm-build
 #    name: npm-build
@@ -170,5 +176,14 @@ repos:
 #    language: system
 #    entry: sh -c "cd frontend && npm run build"
 
-# TODO unit test frontend
-# TODO integration test or e2e test
+# E2E AND INTEGRATION TESTS
+  # Run e2e tests
+  - id: pytest_e2e
+    name: e2e test
+    stages: [commit]
+    language: system
+    entry: poetry run pytest test_integration/test_e2e.py
+    pass_filenames: false
+
+# TODO integration test
+

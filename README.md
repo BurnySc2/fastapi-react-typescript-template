@@ -24,7 +24,7 @@ npm install
 
 ```
 npm run start
-poetry run uvicorn main:app --reload --host 0.0.0.0 --port 5000
+poetry run uvicorn backend.main:app --reload --host 0.0.0.0 --port 5000
 ```
 
 # Deploy
@@ -38,8 +38,7 @@ npm run build
 Launch the backend on a server
 
 ```
-poetry install
-poetry run uvicorn main:app --host 0.0.0.0 --port 5000
+poetry run uvicorn backend.main:app --host 0.0.0.0 --port 5000
 ```
 
 # Functionality
@@ -60,22 +59,50 @@ poetry run uvicorn main:app --host 0.0.0.0 --port 5000
 
 # Tests
 
-[ ] How to test a webserver?
+## Test backend
 
+```
+poetry run pytest backend/test
+```
 
+## Test frontend
+
+```
+npm run test
+```
+
+## End-to-end test
+
+Start frontend dev server, then click a few buttons and make sure the site loads correctly (and how quickly, with benchmark tests).
+
+```
+poetry run pytest test_integration/test_e2e.py
+```
+
+## Integration test
+
+Start backend and frontend server, then make sure that server responses are correct.
+
+TODO
+```
+poetry run pytest test_integration/test_integration.py
+```
 
 # Install and run all pre-commit hook scripts
+
 ```py
 poetry run pre-commit install
 poetry run pre-commit run --all-files
 ```
 
-This runs pylint, mypy, pytest tests, apply autoformatter yapf
+This runs autoformatting, checks and tests
 
 # Upgrade packages to latest major version
 `npx npm-check-updates -u`
 
 # Autoformatting
+
+Done by pre commit hook
 
 ```
 npx prettier --write "src/**/*.tsx"

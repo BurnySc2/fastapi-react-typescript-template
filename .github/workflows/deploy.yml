@@ -7,7 +7,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8, 3.9]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
       fail-fast: false
     runs-on: ${{ matrix.os }}
 
@@ -38,7 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
         node: ['12', '14', '16']
     runs-on: ${{ matrix.os }}
 
@@ -82,16 +82,10 @@ jobs:
       with:
         node-version: ${{ matrix.node }}
 
-    - name: Cache npm
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-${{ matrix.node }}-node-${{ hashFiles('**/package-lock.json') }}
-
     - name: Install npm dependencies
       run: |
         cd frontend
-        npm install
+        npm install --production
         cd ..
 
     - name: Build frontend

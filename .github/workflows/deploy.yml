@@ -55,6 +55,15 @@ jobs:
       run: |
         npm run build
 
+    - name: Deploy to netlify
+      if: github.ref == 'refs/heads/master' && matrix.node == '16' && matrix.python-version == '3.9' && matrix.os == 'ubuntu-latest'
+      uses: jsmrcaga/action-netlify-deploy@v1.1.0
+      with:
+        # Token from https://app.netlify.com/user/applications#personal-access-tokens
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_ACCESS_TOKEN }}
+        NETLIFY_DEPLOY_TO_PROD: true
+        build_directory: frontend/build
+
     - name: Publish to Github Pages
       if: github.ref == 'refs/heads/master' && matrix.node == '16' && matrix.python-version == '3.9' && matrix.os == 'ubuntu-latest'
       uses: JamesIves/github-pages-deploy-action@releases/v3

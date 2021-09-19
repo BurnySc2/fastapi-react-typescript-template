@@ -1,6 +1,6 @@
 import os
-import random
 import signal
+import socket
 import subprocess
 import time
 from pathlib import Path
@@ -16,8 +16,10 @@ from seleniumbase import BaseCase
 # https://seleniumbase.io/
 
 WEBSITE_IP = 'http://localhost'
-WEBSITE_PORT = f'{random.randint(10_000, 65_535)}'
-WEBSITE_ADDRESS = f'{WEBSITE_IP}:{WEBSITE_PORT}'
+# Set port on setup_module()
+WEBSITE_PORT = ''
+WEBSITE_ADDRESS = ''
+# Remember which node processes to close
 NEWLY_CREATED_NODE_PROCESSES: Set[int] = set()
 
 
@@ -28,6 +30,25 @@ def get_pid(name: str) -> Set[int]:
             pid = proc.pid
             process_pids.add(pid)
     return process_pids
+
+
+def set_website_address():
+    # pylint: disable=W0603
+    global WEBSITE_PORT, WEBSITE_ADDRESS
+    WEBSITE_PORT = str(find_next_free_port())
+    WEBSITE_ADDRESS = f'{WEBSITE_IP}:{WEBSITE_PORT}'
+
+
+def find_next_free_port(port: int = 10_000, max_port: int = 65_535) -> int:
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    while port <= max_port:
+        try:
+            sock.bind(('', port))
+            sock.close()
+            return port
+        except OSError:
+            port += 1
+    raise IOError('no free ports')
 
 
 def generate_css_file():
@@ -78,14 +99,14 @@ def setup_module(_module):
     """
     See https://docs.pytest.org/en/6.2.x/xunit_setup.html
     """
+    set_website_address()
     start_frontend_dev_server()
 
 
 # pylint: disable=W0613
 def teardown_module(_module):
-    """ teardown any state that was previously setup with a call to
-    setup_class.
-    """
+    # Stop frontend server
+
     # Soft kill
     for pid in NEWLY_CREATED_NODE_PROCESSES:
         logger.info(f'Killing {pid}')

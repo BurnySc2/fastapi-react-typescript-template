@@ -1,0 +1,6 @@
+.benchmarks
+.hypothesis
+.pytest_cache
+node_modules
+build
+src/index.css

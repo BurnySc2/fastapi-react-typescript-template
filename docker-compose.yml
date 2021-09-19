@@ -1,0 +1,129 @@
+version: '3.9'
+
+services:
+  # https://github.com/khezen/compose-postgres
+  mongodb:
+    container_name: mongodb
+    image: mongo:4.0.4
+    volumes:
+    - mongodata:/data/db
+    ports:
+    - 5433:5433
+    networks:
+    - my_network
+    # Disable logging for this container
+    logging:
+      driver: none
+    restart: unless-stopped
+
+  # https://github.com/khezen/compose-postgres
+  postgres:
+    container_name: postgres_container
+    image: postgres:9.6.23-alpine3.14
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+      PGDATA: /data/postgres
+    volumes:
+    - postgresdata:/data/postgres
+    ports:
+    - 5432:5432
+    networks:
+    - my_network
+    # Disable logging for this container
+    logging:
+      driver: none
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U postgres]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # https://github.com/khezen/compose-postgres
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4:5.6
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+    - pgadmindata:/var/lib/pgadmin
+    ports:
+    - ${PGADMIN_PORT:-5050}:80
+    networks:
+    - my_network
+    restart: unless-stopped
+    logging:
+      driver: none
+    healthcheck:
+      test: [CMD-SHELL, pg_isready]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+    - postgres
+
+  # https://documentation.portainer.io/v2.0/deploy/ceinstalldocker/
+  portainer:
+    container_name: portainer_container
+    image: portainer/portainer-ce:2.6.3-alpine
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+    - 8000:8000
+    - 9000:9000
+    logging:
+      driver: none
+    restart: unless-stopped
+
+  backend:
+    container_name: backend_fastapi
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/backend/Dockerfile
+    ports:
+    - 5000:5000
+    networks:
+    - my_network
+    depends_on:
+    - postgres
+    - mongodb
+    healthcheck:
+      test: [CMD-SHELL, python, -c, print(1)]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    container_name: frontend_react
+    build:
+      context: ./frontend
+      dockerfile: ../dockerfiles/frontend/Dockerfile
+    ports:
+    - 3000:3000
+    networks:
+    - my_network
+    healthcheck:
+      test: [CMD-SHELL, python, -c, print(1)]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  my_network:
+    driver: bridge
+
+volumes:
+    # Postgres data will be stored under /var/lib/docker/volumes
+  postgresdata:
+  pgadmindata:
+  mongodata:
+    # https://stackoverflow.com/a/52815759
+    # With this solution, there don't seem to be permission errors and the volume is mounted in a local folder relative to docker-compose file
+#      driver: local
+#      driver_opts:
+#        type: none
+#        o: bind
+#        device: ./data/pgadmin

@@ -4,9 +4,11 @@ import signal
 import subprocess
 import time
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Set
 
+import psutil
 import pytest
+from loguru import logger
 from pytest_benchmark.fixture import BenchmarkFixture
 from seleniumbase import BaseCase
 
@@ -16,7 +18,16 @@ from seleniumbase import BaseCase
 WEBSITE_IP = 'http://localhost'
 WEBSITE_PORT = f'{random.randint(10_000, 65_535)}'
 WEBSITE_ADDRESS = f'{WEBSITE_IP}:{WEBSITE_PORT}'
-WEBSERVER_PROCESS: Optional[subprocess.Popen] = None
+NEWLY_CREATED_NODE_PROCESSES: Set[int] = set()
+
+
+def get_pid(name: str) -> Set[int]:
+    process_pids = set()
+    for proc in psutil.process_iter():
+        if name == proc.name():
+            pid = proc.pid
+            process_pids.add(pid)
+    return process_pids
 
 
 def generate_css_file():
@@ -33,16 +44,14 @@ def generate_css_file():
 
     # Wait for tailwindcss to compile index.css file
     wait_seconds = 0
-    while not index_css_path.is_file():
+    while not index_css_path.is_file() and wait_seconds < 30:
         wait_seconds += 1
-        if wait_seconds > 30:
-            break
         time.sleep(1)
 
 
 def start_frontend_dev_server():
     # pylint: disable=W0603
-    global WEBSERVER_PROCESS
+    global NEWLY_CREATED_NODE_PROCESSES
 
     env = os.environ.copy()
     # Set port for dev server
@@ -50,14 +59,17 @@ def start_frontend_dev_server():
     # Don't open frontend in browser
     env['BROWSER'] = 'none'
 
+    currently_running_node_processes = get_pid('node')
+
     # pylint: disable=R1732
     generate_css_file()
 
     frontend_folder = Path(__file__).parent.parent / 'frontend'
-    WEBSERVER_PROCESS = subprocess.Popen(['npx', 'react-scripts', 'start'], cwd=frontend_folder, env=env)
+    _ = subprocess.Popen(['npx', 'react-scripts', 'start'], cwd=frontend_folder, env=env)
 
     # Give it some time to create dev server
-    time.sleep(3)
+    time.sleep(5)
+    NEWLY_CREATED_NODE_PROCESSES = get_pid('node') - currently_running_node_processes
 
 
 # pylint: disable=W0613
@@ -71,20 +83,22 @@ def setup_module(_module):
 
 # pylint: disable=W0613
 def teardown_module(_module):
-    # pylint: disable=W0603
-    global WEBSERVER_PROCESS
     """ teardown any state that was previously setup with a call to
     setup_class.
     """
-    if WEBSERVER_PROCESS is not None:
-        time.sleep(0.1)
-        os.kill(WEBSERVER_PROCESS.pid, signal.SIGTERM)
-        time.sleep(0.1)
-        if WEBSERVER_PROCESS.poll() is None:
-            os.kill(WEBSERVER_PROCESS.pid, signal.SIGKILL)
-        time.sleep(0.1)
+    # Soft kill
+    for pid in NEWLY_CREATED_NODE_PROCESSES:
+        logger.info(f'Killing {pid}')
+        os.kill(pid, signal.SIGTERM)
+    time.sleep(1)
 
-    WEBSERVER_PROCESS = None
+    # Force kill
+    for pid in NEWLY_CREATED_NODE_PROCESSES:
+        logger.info(f'Force killing {pid}')
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
 
 
 class MyTestClass(BaseCase):
@@ -170,3 +184,8 @@ class MyBenchClass(BaseCase):
     # def test_bench_add_todo(self):
     #     """ Benchmark how fast a to-do can be added """
     #     self.benchmark(self.add_todo)
+
+
+if __name__ == '__main__':
+    setup_module('asd')
+    teardown_module('asd')

@@ -32,6 +32,8 @@ radon = "^5.0"
 pre-commit = "^2.15"
 # e2e tests
 seleniumbase = "^1.65"
+# Monitor processes
+psutil = "^5.8"
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]

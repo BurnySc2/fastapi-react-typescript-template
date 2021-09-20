@@ -11,16 +11,16 @@ export default function MyRouter(): JSX.Element {
             <div>
                 {/*Links in header*/}
                 <div className="flex justify-center my-2">
-                    <Link className="mx-2 p-1 border-2" to="/">
+                    <Link id="home" className="mx-2 p-1 border-2" to="/">
                         Home
                     </Link>
-                    <Link className="mx-2 p-1 border-2" to="/about">
+                    <Link id="about" className="mx-2 p-1 border-2" to="/about">
                         About
                     </Link>
-                    <Link className="mx-2 p-1 border-2" to="/chat">
+                    <Link id="chat" className="mx-2 p-1 border-2" to="/chat">
                         Chat
                     </Link>
-                    <Link className="mx-2 p-1 border-2" to="/todo">
+                    <Link id="todo" className="mx-2 p-1 border-2" to="/todo">
                         Todo
                     </Link>
                 </div>

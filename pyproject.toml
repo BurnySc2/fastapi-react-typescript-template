@@ -9,6 +9,10 @@ python = ">=3.7 <3.11"
 loguru = "^0.5"
 fastapi = "^0.68"
 uvicorn = {extras = ["standard"], version = "^0.15"}
+# Enable connection to postgres
+psycopg2-binary = "^2.9"
+# Enable connection to mongodb
+pymongo = "^3.12"
 
 [tool.poetry.dev-dependencies]
 # Autoformatter

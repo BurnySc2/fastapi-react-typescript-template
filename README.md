@@ -8,7 +8,7 @@
 # Requirement
 
 -   Python 3.7 or newer
--   Node.js
+-   Node.js 12+
 
 # Installation
 

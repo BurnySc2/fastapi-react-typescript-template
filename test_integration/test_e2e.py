@@ -72,8 +72,7 @@ def start_frontend_dev_server():
     NEWLY_CREATED_NODE_PROCESSES = get_pid('node') - currently_running_node_processes
 
 
-# pylint: disable=W0613
-def setup_module(_module):
+def setup_module():
     # pylint: disable=W0603
     """
     See https://docs.pytest.org/en/6.2.x/xunit_setup.html
@@ -82,8 +81,7 @@ def setup_module(_module):
     start_frontend_dev_server()
 
 
-# pylint: disable=W0613
-def teardown_module(_module):
+def teardown_module():
     # Stop frontend server
 
     # Soft kill
@@ -187,5 +185,5 @@ class MyBenchClass(BaseCase):
 
 
 if __name__ == '__main__':
-    setup_module('asd')
-    teardown_module('asd')
+    setup_module()
+    teardown_module()

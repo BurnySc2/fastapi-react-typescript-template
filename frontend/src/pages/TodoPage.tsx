@@ -7,7 +7,6 @@ type ITodoItem = {
 }
 
 export default function TodoPage(): JSX.Element {
-    // https://github.com/BurnySc2/fastapi-svelte-template/blob/master/src/components/TodoPage.svelte
     const [newTodoText, setNewTodoText] = useState('')
     const [todos, setTodos] = useState<ITodoItem[]>([])
     const [APIserverIsResponding, setAPIserverIsResponding] = useState(true)
@@ -30,15 +29,6 @@ export default function TodoPage(): JSX.Element {
             setAPIserverIsResponding(false)
         }
     }
-
-    /*
-    TODO functions:
-    get todos from server, if server unavailable: set APIserverIsResponding = false
-    submit pressed via multiple ways, see
-    https://github.com/BurnySc2/fastapi-svelte-template/blob/master/src/components/TodoPage.svelte#L72
-    https://github.com/BurnySc2/fastapi-svelte-template/blob/master/src/components/TodoPage.svelte#L89
-
-     */
 
     const submitPressed = async () => {
         /*

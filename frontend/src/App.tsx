@@ -1,11 +1,11 @@
 import React, { Component, ReactElement } from "react"
-import TodoPage from "./components/TodoPage"
+import MyRouter from "./components/MyRouter"
 
 class App extends Component {
     render(): ReactElement {
         return (
             <div>
-                <TodoPage />
+                <MyRouter />
             </div>
         )
     }

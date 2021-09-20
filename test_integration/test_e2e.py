@@ -103,7 +103,7 @@ class MyTestClass(BaseCase):
     def test_basic_site_display(self):
         """ Check if HOME site is visible """
         self.open(WEBSITE_ADDRESS)
-        self.assert_text('some text')
+        self.assert_text('Hello world!')
 
     # def test_shows_todos(self):
     #     """ Check if the to-do site is visible """
@@ -164,7 +164,7 @@ class MyBenchClass(BaseCase):
     def basic_site_display(self):
         """ Check if HOME site is visible """
         self.open(WEBSITE_ADDRESS)
-        self.assert_text('some text')
+        self.assert_text('Hello world!')
 
     def test_bench_basic_site_display(self):
         """ Benchmark how fast the site loads """

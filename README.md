@@ -24,7 +24,7 @@ cd frontend && npm install && cd ..
 
 ```
 npm run start
-poetry run uvicorn backend.main:app --reload --host 0.0.0.0 --port 5000
+poetry run uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 # Deploy
@@ -38,7 +38,7 @@ npm run build
 Launch the backend on a server
 
 ```
-poetry run uvicorn backend.main:app --host 0.0.0.0 --port 5000
+poetry run uvicorn backend.main:app --host 0.0.0.0 --port 8000
 ```
 
 # Functionality

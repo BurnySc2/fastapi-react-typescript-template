@@ -2,7 +2,7 @@ import React from 'react'
 import { HashRouter, Switch, Route, Link } from 'react-router-dom'
 import About from '../pages/About'
 import Chat from '../pages/Chat'
-import TodoPage from '../pages/Todo'
+import TodoPage from '../pages/TodoPage'
 import HomePage from '../pages/Home'
 
 export default function MyRouter(): JSX.Element {

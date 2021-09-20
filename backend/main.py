@@ -30,6 +30,31 @@ app.add_middleware(
 )
 
 
+def create_database_if_not_exist():
+    # pylint: disable=W0603
+    global db
+    todos_db = Path(__file__).parent / 'data' / 'todos.db'
+    if not todos_db.is_file():
+        os.makedirs(todos_db.parent, exist_ok=True)
+        db = sqlite3.connect(todos_db)
+        db.execute('CREATE TABLE todos (id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT)')
+        db.commit()
+        logger.info(f'Created new database: {todos_db.name}')
+    else:
+        db = sqlite3.connect(todos_db)
+
+
+@app.on_event('startup')
+async def startup_event():
+    create_database_if_not_exist()
+
+
+@app.on_event('shutdown')
+def shutdown_event():
+    if db:
+        db.close()
+
+
 @app.get('/')
 def hello_world():
     return {'Hello': 'World'}
@@ -65,8 +90,8 @@ async def create_new_todo2(request: Request):
     Send a request with body {"new_todo": "<todo task description>"}
     """
     # https://fastapi.tiangolo.com/advanced/using-request-directly/
-    json_response = await request.json()
-    todo_item = json_response.get('new_todo', None)
+    request_body = await request.json()
+    todo_item = request_body.get('new_todo', None)
     if todo_item:
         logger.info(f'Attempting to insert new todo: {todo_item}')
         if db:
@@ -103,22 +128,6 @@ async def remove_todo(todo_id: int):
         db.execute('DELETE FROM todos WHERE id==(?)', [todo_id])
         db.commit()
 
-
-def create_database_if_not_exist():
-    # pylint: disable=W0603
-    global db
-    todos_db = Path(__file__).parent / 'data' / 'todos.db'
-    if not todos_db.is_file():
-        os.makedirs(todos_db.parent, exist_ok=True)
-        db = sqlite3.connect(todos_db)
-        db.execute('CREATE TABLE todos (id INTEGER PRIMARY KEY AUTOINCREMENT, task TEXT)')
-        db.commit()
-        logger.info(f'Created new database: {todos_db.name}')
-    else:
-        db = sqlite3.connect(todos_db)
-
-
-create_database_if_not_exist()
 
 if __name__ == '__main__':
     uvicorn.run(app, host='0.0.0.0', port=8000)

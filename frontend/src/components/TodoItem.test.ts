@@ -1,4 +1,4 @@
-import './Card'
+import './TodoItem'
 
 // Simple example test
 test('adds 1 + 2 to equal 3', () => {

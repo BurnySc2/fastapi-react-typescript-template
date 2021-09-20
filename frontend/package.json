@@ -13,7 +13,7 @@
         "test": "react-scripts test --watchAll=false",
         "update": "npx npm-check-updates -u && npm run prune",
         "prune": "rm package-lock.json -f && rm node_modules -rf && npm i",
-        "format": "npx prettier --write \"src/**/*.{json,ts,tsx}\""
+        "format": "npx prettier --write \"src/**/*.{json,js,ts,tsx}\""
     },
     "scriptsComments": {
         "tailwind:dev": "Generate a index.css file which contains all tailwind.css classes",

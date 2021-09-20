@@ -1,6 +1,6 @@
-import React from "react"
+import React from 'react'
 
-type IProps = {
+interface IProps {
     index: number
     id: number
     content: string

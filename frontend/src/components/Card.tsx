@@ -1,12 +1,12 @@
-import React, { ReactElement } from "react"
+import React, { ReactElement } from 'react'
 
 function Card(props: {
     listOfTodos: { id: number; content: string }[]
     removeTodo: (id: number) => void
 }): ReactElement {
-    const cssClass = "flex flex-row"
-    const cssButton = "m-1 p-1 border-2"
-    const cssTodoDescription = "m-1 p-1"
+    const cssClass = 'flex flex-row'
+    const cssButton = 'm-1 p-1 border-2'
+    const cssTodoDescription = 'm-1 p-1'
     return (
         <div>
             {props.listOfTodos &&

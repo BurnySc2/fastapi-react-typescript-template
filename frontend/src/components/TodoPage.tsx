@@ -1,13 +1,13 @@
-import React, { useState, useEffect, ReactElement } from "react"
-import Card from "./Card"
-import ContextConsumer from "./ContextConsumer"
-import { ContextProvider } from "./ContextProvider"
+import React, { useState, useEffect, ReactElement } from 'react'
+import Card from './Card'
+import ContextConsumer from './ContextConsumer'
+import { ContextProvider } from './ContextProvider'
 
 function TodoPage(): ReactElement {
-    const [newTodo, setNewTodo] = useState("")
+    const [newTodo, setNewTodo] = useState('')
     const [todos, setTodos] = useState<{ id: number; content: string }[]>([])
     // Context variable example
-    const [contextValue, setContextValue] = useState("some text")
+    const [contextValue, setContextValue] = useState('some text')
     console.log(contextValue)
 
     useEffect(() => {
@@ -15,12 +15,12 @@ function TodoPage(): ReactElement {
     }, [])
 
     const getTodos = async () => {
-        const response = await fetch("/api")
+        const response = await fetch('/api')
         if (response.ok) {
             setTodos(await response.json())
         } else {
             // @ts-ignore
-            setTodos([{ id: 0, content: "SERVER ERROR" }])
+            setTodos([{ id: 0, content: 'SERVER ERROR' }])
         }
     }
 
@@ -32,41 +32,41 @@ function TodoPage(): ReactElement {
         fetch(`/api/${newTodo}?` + params.toString(), requestOptions)
          */
         await fetch(`/api/${newTodo}`, {
-            method: "POST",
+            method: 'POST',
         })
-        setNewTodo("")
+        setNewTodo('')
         await getTodos()
     }
 
     const submitPressedBody = async () => {
         // When using request body:
         const requestOptions = {
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify({
                 new_todo: newTodo,
             }),
         }
-        fetch("/api_body", requestOptions)
-        setNewTodo("")
+        fetch('/api_body', requestOptions)
+        setNewTodo('')
         await getTodos()
     }
 
     const submitPressedModel = async () => {
         // When using request body:
         const requestOptions = {
-            method: "POST",
+            method: 'POST',
             body: JSON.stringify({
                 todo_description: newTodo,
             }),
         }
-        fetch("/api_model", requestOptions)
-        setNewTodo("")
+        fetch('/api_model', requestOptions)
+        setNewTodo('')
         await getTodos()
     }
 
     const removeTodo = async (id: number) => {
         await fetch(`/api/${id}`, {
-            method: "DELETE",
+            method: 'DELETE',
         })
         await getTodos()
     }

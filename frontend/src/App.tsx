@@ -1,5 +1,5 @@
-import React, { Component, ReactElement } from "react"
-import MyRouter from "./components/MyRouter"
+import React, { Component, ReactElement } from 'react'
+import MyRouter from './components/MyRouter'
 
 class App extends Component {
     render(): ReactElement {

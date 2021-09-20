@@ -1,14 +1,14 @@
-import React, { useState } from "react"
-import TodoItem from "../components/TodoItem"
+import React, { useState } from 'react'
+import TodoItem from '../components/TodoItem'
 
-export interface ITodoItem {
+interface ITodoItem {
     id: number
     content: string
 }
 
 export default function TodoPage(): JSX.Element {
     // https://github.com/BurnySc2/fastapi-svelte-template/blob/master/src/components/TodoPage.svelte
-    const [newTodoText, setNewTodoText] = useState("")
+    const [newTodoText, setNewTodoText] = useState('')
     const [todos, setTodos] = useState<ITodoItem[]>([])
     const APIserverIsResponding = true
 
@@ -20,7 +20,7 @@ export default function TodoPage(): JSX.Element {
         })
         maxIndex += 1
         setTodos([...todos, { id: maxIndex, content: newTodoText }])
-        setNewTodoText("")
+        setNewTodoText('')
     }
 
     const localRemove = (id: number) => {
@@ -36,7 +36,20 @@ export default function TodoPage(): JSX.Element {
         }
     }
 
-    const todos_jsx: JSX.Element[] = todos.map((todoItem, index) => {
+    const todoTextInput = (
+        <input
+            id="newTodoInput"
+            className="border-2 my-2 mx-1"
+            type="text"
+            onChange={(e) => {
+                setNewTodoText(e.target.value)
+            }}
+            value={newTodoText}
+            placeholder="My new todo item"
+        />
+    )
+
+    const renderTodoItem = (todoItem: ITodoItem, index: number) => {
         return (
             <TodoItem
                 index={index}
@@ -46,21 +59,12 @@ export default function TodoPage(): JSX.Element {
                 key={todoItem.id}
             />
         )
-    })
+    }
 
     return (
         <div className="flex flex-col items-center">
             <div className="flex">
-                <input
-                    id="newTodoInput"
-                    className="border-2 my-2 mx-1"
-                    type="text"
-                    onChange={(e) => {
-                        setNewTodoText(e.target.value)
-                    }}
-                    value={newTodoText}
-                    placeholder="My new todo item"
-                />
+                {todoTextInput}
                 <button className="border-2 my-2 mx-1" id="submit1" onClick={localSubmit}>
                     Submit
                 </button>
@@ -70,8 +74,8 @@ export default function TodoPage(): JSX.Element {
                 {/*<button className="border-2 my-2 mx-1" id="submit3" on:click={submitPressedModel}*/}
                 {/*    >SubmitModel</button*/}
             </div>
-            {APIserverIsResponding ? "server responding" : "server not respondingg"}
-            {todos_jsx}
+            {APIserverIsResponding ? 'server responding' : 'server not respondingg'}
+            {todos.map(renderTodoItem)}
         </div>
     )
 }

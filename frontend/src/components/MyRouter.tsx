@@ -1,5 +1,5 @@
 import React from "react"
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom"
+import { HashRouter, Switch, Route, Link } from "react-router-dom"
 import About from "../pages/About"
 import Chat from "../pages/Chat"
 import TodoPage from "../pages/Todo"
@@ -7,7 +7,7 @@ import HomePage from "../pages/Home"
 
 export default function MyRouter(): JSX.Element {
     return (
-        <Router>
+        <HashRouter>
             <div>
                 {/*Links in header*/}
                 <div className="flex justify-center my-2">
@@ -41,6 +41,6 @@ export default function MyRouter(): JSX.Element {
                     </Route>
                 </Switch>
             </div>
-        </Router>
+        </HashRouter>
     )
 }

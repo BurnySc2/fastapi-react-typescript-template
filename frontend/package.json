@@ -1,8 +1,8 @@
 {
-    "name": "tailwind-react-template",
+    "name": "fastapi-react-typescript-template",
     "version": "0.1.0",
     "private": true,
-    "homepage": "https://burnysc2.github.io/fastapi-react-typescript-template/",
+    "homepage": "./",
     "proxy": "http://0.0.0.0:8000",
     "scripts": {
         "tailwind:dev": "DEVELOPMENT=true tailwind build -i src/tailwind.css -o src/index.css",

@@ -1,6 +1,9 @@
+import os
 import signal
 import socket
 import subprocess
+import time
+from pathlib import Path
 from typing import Set
 
 import psutil
@@ -14,7 +17,14 @@ from psycopg2._psycopg import connection, cursor
 from pymongo import MongoClient
 
 
-class timeout:
+class Timeout:
+    """
+    Run something for a maximum limited time
+    try:
+        with Timeout(seconds=2):
+            ...
+    except TimeoutError:
+    """
     def __init__(self, seconds=1, error_message='Timeout'):
         self.seconds = seconds
         self.error_message = error_message
@@ -31,6 +41,7 @@ class timeout:
 
 
 def get_pid(name: str) -> Set[int]:
+    """ Return a list of PIDs of all processes with the exact given name. """
     process_pids = set()
     for proc in psutil.process_iter():
         if name == proc.name():
@@ -39,16 +50,22 @@ def get_pid(name: str) -> Set[int]:
     return process_pids
 
 
-def find_next_free_port(port: int = 10_000, max_port: int = 65_535) -> int:
+def find_next_free_port(port: int = 10_000, max_port: int = 65_535, exclude_ports: Set[int] = None) -> int:
+    if exclude_ports is None:
+        exclude_ports = set()
+
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     while port <= max_port:
+        if port in exclude_ports:
+            port += 1
+            continue
         try:
             sock.bind(('', port))
             sock.close()
             return port
         except OSError:
             port += 1
-    raise IOError('no free ports')
+    raise IOError('No free ports')
 
 
 # pylint: disable=R1732
@@ -64,10 +81,74 @@ def check_if_docker_is_running() -> bool:
     return docker_running
 
 
-def check_if_mongodb_is_running(port: int = 27017) -> bool:
-    mongo_db_address = f'mongodb://localhost:{port}'
+def generate_css_file():
+    frontend_folder = Path(__file__).parent.parent / 'frontend'
+    index_css_path = frontend_folder / 'src' / 'index.css'
+
+    # If it already exists, skip generation of file
+    # pylint: disable=R1732
+    if index_css_path.is_file():
+        return
+
+    # Start compilation of index.css
+    _tailwind_css_process = subprocess.Popen(['npm', 'run', 'tailwind:prod'], cwd=frontend_folder)
+
+    # Wait for tailwindcss to compile index.css file
+    wait_seconds = 0
+    while not index_css_path.is_file() and wait_seconds < 30:
+        wait_seconds += 1
+        time.sleep(1)
+
+
+def start_frontend_dev_server(
+    port: int,
+    NEWLY_CREATED_NODE_PROCESSES: Set[int],
+    backend_proxy: str = 'http://localhost:8000',
+):
+    env = os.environ.copy()
+    # Set port for dev server
+    env['PORT'] = str(port)
+    # Don't open frontend in browser
+    env['BROWSER'] = 'none'
+    # Which ip and port to use when sending fetch requests to api
+    # Only REACT_APP_ prefixed env variables will be forwarded to the app: console.log(process.env)
+    # https://create-react-app.dev/docs/adding-custom-environment-variables
+    env['REACT_APP_PROXY'] = backend_proxy
+
+    currently_running_node_processes = get_pid('node')
+
+    # pylint: disable=R1732
+    generate_css_file()
+
+    frontend_folder = Path(__file__).parent.parent / 'frontend'
+    logger.info(f'Starting frontend on port {port}, using backend proxy {backend_proxy}')
+    _ = subprocess.Popen(['npx', 'react-scripts', 'start'], cwd=frontend_folder, env=env)
+
+    # Give it some time to create dev server
+    time.sleep(5)
+    NEWLY_CREATED_NODE_PROCESSES |= get_pid('node') - currently_running_node_processes
+
+
+def start_backend_dev_server(port: int):
+    backend_folder = Path(__file__).parent.parent / 'backend'
+    env = os.environ.copy()
+    env['USE_MONGO_DB'] = 'True'
+    env['USE_POSTGRES_DB'] = 'True'
+    env['USE_LOCAL_SQLITE_DB'] = 'True'
+    env['SQLITE_FILENAME'] = 'todos_TEST.db'
+    # Automatically shuts down when this process ends
+    logger.info(f'Starting backend on port {port}')
+    _ = subprocess.Popen(
+        ['poetry', 'run', 'uvicorn', 'backend.main:app', '--reload', '--host', 'localhost', '--port', f'{port}'],
+        cwd=backend_folder,
+        env=env,
+    )
+
+
+def check_if_mongodb_is_running(mongo_db_port: int = 27017) -> bool:
+    mongo_db_address = f'mongodb://localhost:{mongo_db_port}'
     try:
-        with timeout(seconds=2):
+        with Timeout(seconds=2):
             _my_client: MongoClient
             with pymongo.MongoClient(mongo_db_address) as _my_client:
                 pass
@@ -77,12 +158,11 @@ def check_if_mongodb_is_running(port: int = 27017) -> bool:
 
 
 # pylint: disable=R1732
-def start_mongodb() -> int:
+def start_mongodb(mongo_db_port: int = 27017) -> int:
     # Start mongodb via docker
-    port = 27017
-    if check_if_mongodb_is_running(port):
-        logger.info(f'MongoDB is already running on port {port}')
-        return port
+    if check_if_mongodb_is_running(mongo_db_port):
+        logger.info(f'MongoDB is already running on port {mongo_db_port}')
+        return mongo_db_port
     command = [
         # TODO add volume to save db
         'docker',
@@ -90,6 +170,7 @@ def start_mongodb() -> int:
         '--rm',
         '-d',
         '-p',
+        # TODO use mongo_db_port
         '27017-27019:27017-27019',
         '--name',
         'mongodb_test',
@@ -98,7 +179,7 @@ def start_mongodb() -> int:
     logger.info(f"Starting mongoDB with command: {' '.join(command)}")
     process = subprocess.Popen(command)
     process.wait()
-    return port
+    return mongo_db_port
 
 
 def check_if_postgres_is_running(port: int = 5432) -> bool:
@@ -113,9 +194,8 @@ def check_if_postgres_is_running(port: int = 5432) -> bool:
 
 
 # pylint: disable=R1732
-def start_postgres() -> int:
+def start_postgres(postgres_port: int = 5432) -> int:
     # Start postgres via docker
-    postgres_port = 5432
     if check_if_postgres_is_running(postgres_port):
         logger.info(f'Postgres is already running on port {postgres_port}')
         return postgres_port
@@ -158,3 +238,9 @@ if __name__ == '__main__':
     logger.info(f'MongoDB running: {check_if_mongodb_is_running()}')
     start_postgres()
     start_mongodb()
+    free_frontend_port = find_next_free_port()
+    free_backend_port = find_next_free_port(exclude_ports={free_frontend_port})
+    start_frontend_dev_server(free_frontend_port, set(), backend_proxy=f'http://localhost:{free_backend_port}')
+    start_backend_dev_server(free_backend_port)
+    while 1:
+        time.sleep(1)

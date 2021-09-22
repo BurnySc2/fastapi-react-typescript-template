@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import TodoItem from '../components/TodoItem'
+import { delete_, get, post } from '../functions/fetch_helper'
 
 type ITodoItem = {
     id: number
@@ -17,7 +18,7 @@ export default function TodoPage(): JSX.Element {
 
     const getTodos = async () => {
         try {
-            const response = await fetch(`/api`)
+            const response = await get(`/api`)
             if (response.ok) {
                 setTodos(await response.json())
                 setAPIserverIsResponding(true)
@@ -38,9 +39,7 @@ export default function TodoPage(): JSX.Element {
         fetch(`/api/${newTodo}?` + params.toString(), requestOptions)
          */
         if (APIserverIsResponding) {
-            await fetch(`/api/${newTodoText}`, {
-                method: 'POST',
-            })
+            await post(`/api/${newTodoText}`)
         } else {
             localSubmit()
         }
@@ -50,13 +49,9 @@ export default function TodoPage(): JSX.Element {
 
     const submitPressedBody = async () => {
         if (APIserverIsResponding) {
-            const requestOptions = {
-                method: 'POST',
-                body: JSON.stringify({
-                    new_todo: newTodoText,
-                }),
-            }
-            await fetch(`/api_body`, requestOptions)
+            await post(`/api_body`, {
+                new_todo: newTodoText,
+            })
         } else {
             localSubmit()
         }
@@ -66,18 +61,9 @@ export default function TodoPage(): JSX.Element {
 
     const submitPressedModel = async () => {
         if (APIserverIsResponding) {
-            const requestOptions = {
-                method: 'POST',
-                // Otherwise it gets send as binary data?
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                // The expected object model is the same as defined in fastapi - automatic 422 error if it doesn't match the model
-                body: JSON.stringify({
-                    todo_description: newTodoText,
-                }),
-            }
-            const response = await fetch(`/api_model`, requestOptions)
+            const response = await post(`/api_model`, {
+                todo_description: newTodoText,
+            })
             if (!response.ok) {
                 // If error, then you can debug here and see which fields were missing/expected
                 const body = await response.text()
@@ -92,9 +78,7 @@ export default function TodoPage(): JSX.Element {
 
     const removeTodo = async (id: number) => {
         if (APIserverIsResponding) {
-            await fetch(`/api/${id}`, {
-                method: 'DELETE',
-            })
+            await delete_(`/api/${id}`)
         } else {
             localRemove(id)
         }

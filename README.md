@@ -7,8 +7,9 @@
 
 # Requirement
 
--   Python 3.7 or newer
--   Node.js 12+
+- Python 3.7 or newer (for backend and e2e/integration tests)
+- Node.js 12+ (for frontend)
+- Docker (for tests)
 
 # Installation
 

@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "homepage": "./",
-    "proxy": "http://0.0.0.0:8000",
+    "proxy": "http://localhost:8000",
     "scripts": {
         "tailwind:dev": "DEVELOPMENT=true tailwind build -i src/tailwind.css -o src/index.css",
         "tailwind:prod": "NODE_ENV=production tailwind build -i src/tailwind.css -c tailwind.config.js -o src/index.css",

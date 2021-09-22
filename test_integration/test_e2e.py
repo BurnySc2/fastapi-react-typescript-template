@@ -1,8 +1,6 @@
 import os
 import signal
-import subprocess
 import time
-from pathlib import Path
 from typing import Optional, Set
 
 import pytest
@@ -13,63 +11,19 @@ from pytest_benchmark.fixture import BenchmarkFixture
 # https://seleniumbase.io/
 from seleniumbase import BaseCase
 
-from test_integration.tester_helper import find_next_free_port, get_pid
+from test_integration.tester_helper import find_next_free_port, start_frontend_dev_server
 
 WEBSITE_IP = 'http://localhost'
-# Set port on setup_module()
-WEBSITE_PORT = ''
+# Set in setup_module()
 WEBSITE_ADDRESS = ''
 # Remember which node processes to close
 NEWLY_CREATED_NODE_PROCESSES: Set[int] = set()
 
 
-def set_website_address():
+def set_website_address(port: int):
     # pylint: disable=W0603
-    global WEBSITE_PORT, WEBSITE_ADDRESS
-    WEBSITE_PORT = str(find_next_free_port())
-    WEBSITE_ADDRESS = f'{WEBSITE_IP}:{WEBSITE_PORT}'
-
-
-def generate_css_file():
-    frontend_folder = Path(__file__).parent.parent / 'frontend'
-    index_css_path = frontend_folder / 'src' / 'index.css'
-
-    # If it already exists, skip generation of file
-    # pylint: disable=R1732
-    if index_css_path.is_file():
-        return
-
-    # Start compilation of index.css
-    _tailwind_css_process = subprocess.Popen(['npm', 'run', 'tailwind:prod'], cwd=frontend_folder)
-
-    # Wait for tailwindcss to compile index.css file
-    wait_seconds = 0
-    while not index_css_path.is_file() and wait_seconds < 30:
-        wait_seconds += 1
-        time.sleep(1)
-
-
-def start_frontend_dev_server():
-    # pylint: disable=W0603
-    global NEWLY_CREATED_NODE_PROCESSES
-
-    env = os.environ.copy()
-    # Set port for dev server
-    env['PORT'] = WEBSITE_PORT
-    # Don't open frontend in browser
-    env['BROWSER'] = 'none'
-
-    currently_running_node_processes = get_pid('node')
-
-    # pylint: disable=R1732
-    generate_css_file()
-
-    frontend_folder = Path(__file__).parent.parent / 'frontend'
-    _ = subprocess.Popen(['npx', 'react-scripts', 'start'], cwd=frontend_folder, env=env)
-
-    # Give it some time to create dev server
-    time.sleep(5)
-    NEWLY_CREATED_NODE_PROCESSES = get_pid('node') - currently_running_node_processes
+    global WEBSITE_ADDRESS
+    WEBSITE_ADDRESS = f'{WEBSITE_IP}:{port}'
 
 
 def setup_module():
@@ -77,8 +31,9 @@ def setup_module():
     """
     See https://docs.pytest.org/en/6.2.x/xunit_setup.html
     """
-    set_website_address()
-    start_frontend_dev_server()
+    port = find_next_free_port()
+    set_website_address(port)
+    start_frontend_dev_server(port, NEWLY_CREATED_NODE_PROCESSES)
 
 
 def teardown_module():

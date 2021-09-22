@@ -116,6 +116,8 @@ jobs:
         poetry run pytest test_integration/test_e2e.py
 
   deploy_frontend:
+    env:
+      REACT_APP_PROXY: http://localhost:8000
     strategy:
       matrix:
         os: [ubuntu-latest]

@@ -11,14 +11,23 @@ from loguru import logger
 # pylint: disable=E0611
 from pydantic import BaseModel
 
+ENV = os.environ.copy()
+USE_MONGO_DB = ENV.get('USE_MONGO_DB', 'True') == 'True'
+USE_POSTGRES_DB = ENV.get('USE_POSTGRES_DB', 'True') == 'True'
+USE_LOCAL_SQLITE_DB = ENV.get('USE_LOCAL_SQLITE_DB', 'True') == 'True'
+SQLITE_FILENAME = ENV.get('SQLITE_FILENAME', 'todos.db')
+
 app = FastAPI()
 db: Optional[sqlite3.Connection] = None
 
 origins = [
-    'http://localhost.tiangolo.com',
-    'https://localhost.tiangolo.com',
     'http://localhost',
-    'http://localhost:3000',
+    'http://localhost:8000',
+    'https://burnysc2.github.io/fastapi-react-typescript-template',
+    'https://burnysc2.github.io/fastapi-react-typescript-template/#/',
+    'https://burnysc2.github.io/fastapi-react-typescript-template/#/todo',
+    # TODO UNSAFE: Remove me
+    '*',
 ]
 
 app.add_middleware(
@@ -33,7 +42,7 @@ app.add_middleware(
 def create_database_if_not_exist():
     # pylint: disable=W0603
     global db
-    todos_db = Path(__file__).parent / 'data' / 'todos.db'
+    todos_db = Path(__file__).parent / 'data' / SQLITE_FILENAME
     if not todos_db.is_file():
         os.makedirs(todos_db.parent, exist_ok=True)
         db = sqlite3.connect(todos_db)

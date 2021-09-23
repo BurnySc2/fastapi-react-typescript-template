@@ -11,28 +11,22 @@ from pytest_benchmark.fixture import BenchmarkFixture
 # https://seleniumbase.io/
 from seleniumbase import BaseCase
 
-from test_integration.tester_helper import find_next_free_port, start_frontend_dev_server
+from test_integration.tester_helper import find_next_free_port, get_website_address, start_frontend_dev_server
 
-WEBSITE_IP = 'http://localhost'
 # Set in setup_module()
 WEBSITE_ADDRESS = ''
 # Remember which node processes to close
 NEWLY_CREATED_NODE_PROCESSES: Set[int] = set()
 
 
-def set_website_address(port: int):
-    # pylint: disable=W0603
-    global WEBSITE_ADDRESS
-    WEBSITE_ADDRESS = f'{WEBSITE_IP}:{port}'
-
-
 def setup_module():
     # pylint: disable=W0603
+    global WEBSITE_ADDRESS
     """
     See https://docs.pytest.org/en/6.2.x/xunit_setup.html
     """
     port = find_next_free_port()
-    set_website_address(port)
+    WEBSITE_ADDRESS = get_website_address(port)
     start_frontend_dev_server(port, NEWLY_CREATED_NODE_PROCESSES)
 
 

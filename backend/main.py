@@ -16,6 +16,7 @@ USE_MONGO_DB = ENV.get('USE_MONGO_DB', 'True') == 'True'
 USE_POSTGRES_DB = ENV.get('USE_POSTGRES_DB', 'True') == 'True'
 USE_LOCAL_SQLITE_DB = ENV.get('USE_LOCAL_SQLITE_DB', 'True') == 'True'
 SQLITE_FILENAME = ENV.get('SQLITE_FILENAME', 'todos.db')
+# TODO use different database tables when using stage = dev/staging/prod
 
 app = FastAPI()
 db: Optional[sqlite3.Connection] = None
@@ -23,9 +24,10 @@ db: Optional[sqlite3.Connection] = None
 origins = [
     'http://localhost',
     'http://localhost:8000',
-    'https://burnysc2.github.io/fastapi-react-typescript-template',
-    'https://burnysc2.github.io/fastapi-react-typescript-template/#/',
-    'https://burnysc2.github.io/fastapi-react-typescript-template/#/todo',
+    # The following 3 dont work, how to make it work so only this address can speak to api server?
+    # 'https://burnysc2.github.io/fastapi-react-typescript-template',
+    # 'https://burnysc2.github.io/fastapi-react-typescript-template/#/',
+    # 'https://burnysc2.github.io/fastapi-react-typescript-template/#/todo',
     # TODO UNSAFE: Remove me
     '*',
 ]
@@ -139,4 +141,4 @@ async def remove_todo(todo_id: int):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run('__main__:app', host='0.0.0.0', port=8000, reload=True)

@@ -25,7 +25,7 @@ cd frontend && npm install && cd ..
 
 ```
 npm run start
-poetry run uvicorn backend.main:app --reload --host 0.0.0.0 --port 8000
+poetry run uvicorn backend.main:app --reload --host localhost --port 8000
 ```
 
 # Deploy
@@ -39,7 +39,7 @@ npm run build
 Launch the backend on a server
 
 ```
-poetry run uvicorn backend.main:app --host 0.0.0.0 --port 8000
+poetry run uvicorn backend.main:app --host localhost --port 8000
 ```
 
 # Functionality
@@ -84,7 +84,6 @@ poetry run pytest test_integration/test_e2e.py
 
 Start backend and frontend server, then make sure that server responses are correct.
 
-TODO
 ```
 poetry run pytest test_integration/test_integration.py
 ```

@@ -16,6 +16,8 @@ from psycopg2 import OperationalError
 from psycopg2._psycopg import connection, cursor
 from pymongo import MongoClient
 
+WEBSITE_IP = 'http://localhost'
+
 
 class Timeout:
     """
@@ -50,6 +52,12 @@ def get_pid(name: str) -> Set[int]:
     return process_pids
 
 
+def remove_leftover_files(files: Set[Path]):
+    for file in files:
+        if file.is_file():
+            os.remove(file)
+
+
 def find_next_free_port(port: int = 10_000, max_port: int = 65_535, exclude_ports: Set[int] = None) -> int:
     if exclude_ports is None:
         exclude_ports = set()
@@ -81,6 +89,10 @@ def check_if_docker_is_running() -> bool:
     return docker_running
 
 
+def get_website_address(port: int) -> str:
+    return f'{WEBSITE_IP}:{port}'
+
+
 def generate_css_file():
     frontend_folder = Path(__file__).parent.parent / 'frontend'
     index_css_path = frontend_folder / 'src' / 'index.css'
@@ -102,7 +114,7 @@ def generate_css_file():
 
 def start_frontend_dev_server(
     port: int,
-    NEWLY_CREATED_NODE_PROCESSES: Set[int],
+    NEWLY_CREATED_PROCESSES: Set[int],
     backend_proxy: str = 'http://localhost:8000',
 ):
     env = os.environ.copy()
@@ -124,25 +136,43 @@ def start_frontend_dev_server(
     logger.info(f'Starting frontend on port {port}, using backend proxy {backend_proxy}')
     _ = subprocess.Popen(['npx', 'react-scripts', 'start'], cwd=frontend_folder, env=env)
 
-    # Give it some time to create dev server
+    # Give it some time to create dev server and all (3?) node proccesses
     time.sleep(5)
-    NEWLY_CREATED_NODE_PROCESSES |= get_pid('node') - currently_running_node_processes
+    new_processes = get_pid('node') - currently_running_node_processes
+    logger.info(f'New node processes: {new_processes}')
+    NEWLY_CREATED_PROCESSES |= new_processes
 
 
-def start_backend_dev_server(port: int):
-    backend_folder = Path(__file__).parent.parent / 'backend'
+def start_backend_dev_server(
+    port: int,
+    NEWLY_CREATED_PROCESSES: Set[int],
+    CREATED_FILES: Set[Path],
+):
+    root_folder = Path(__file__).parent.parent
+    backend_folder = root_folder / 'backend'
+    currently_running_uvicorn_processes = get_pid('uvicorn')
     env = os.environ.copy()
     env['USE_MONGO_DB'] = 'True'
     env['USE_POSTGRES_DB'] = 'True'
     env['USE_LOCAL_SQLITE_DB'] = 'True'
-    env['SQLITE_FILENAME'] = 'todos_TEST.db'
-    # Automatically shuts down when this process ends
+
+    sqlite_test_file_name = 'todos_TEST.db'
+    sqlite_test_file_path = backend_folder / 'data' / sqlite_test_file_name
+    CREATED_FILES.add(sqlite_test_file_path)
+    remove_leftover_files({sqlite_test_file_path})
+    env['SQLITE_FILENAME'] = sqlite_test_file_name
+
     logger.info(f'Starting backend on port {port}')
     _ = subprocess.Popen(
-        ['poetry', 'run', 'uvicorn', 'backend.main:app', '--reload', '--host', 'localhost', '--port', f'{port}'],
-        cwd=backend_folder,
+        ['poetry', 'run', 'uvicorn', 'backend.main:app', '--host', 'localhost', '--port', f'{port}'],
+        cwd=root_folder,
         env=env,
     )
+    # Give it some time to create dev server
+    time.sleep(1)
+    new_processes = get_pid('uvicorn') - currently_running_uvicorn_processes
+    logger.info(f'New uvicorn processes: {new_processes}')
+    NEWLY_CREATED_PROCESSES |= new_processes
 
 
 def check_if_mongodb_is_running(mongo_db_port: int = 27017) -> bool:
@@ -169,11 +199,11 @@ def start_mongodb(mongo_db_port: int = 27017) -> int:
         'run',
         '--rm',
         '-d',
+        '--name',
+        'mongodb_test',
         '-p',
         # TODO use mongo_db_port
         '27017-27019:27017-27019',
-        '--name',
-        'mongodb_test',
         'mongo:5.0.0',
     ]
     logger.info(f"Starting mongoDB with command: {' '.join(command)}")
@@ -211,8 +241,8 @@ def start_postgres(postgres_port: int = 5432) -> int:
             # TODO add volume to save db, or should that not be active while testing?
             'docker',
             'run',
-            '-d',
             '--rm',
+            '-d',
             '--name',
             postgres_container_name,
             '-p',
@@ -241,6 +271,6 @@ if __name__ == '__main__':
     free_frontend_port = find_next_free_port()
     free_backend_port = find_next_free_port(exclude_ports={free_frontend_port})
     start_frontend_dev_server(free_frontend_port, set(), backend_proxy=f'http://localhost:{free_backend_port}')
-    start_backend_dev_server(free_backend_port)
+    start_backend_dev_server(free_backend_port, set(), set())
     while 1:
         time.sleep(1)

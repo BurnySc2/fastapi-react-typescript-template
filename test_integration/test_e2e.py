@@ -60,7 +60,6 @@ class MyTestClass(BaseCase):
         self.click('#todo')
         self.assert_text('Unable to connect to server - running local mode')
 
-    # TODO fix test by adding offline-functionality so that it adds items even though server is not responding, or include starting server in e2e tests
     def test_add_todo(self):
         """ Add a new to-do entry """
         self.open(WEBSITE_ADDRESS)

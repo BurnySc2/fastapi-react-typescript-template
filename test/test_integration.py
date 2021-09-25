@@ -117,7 +117,6 @@ class MyTestClass(BaseCase):
 
         self.assert_text_not_visible(my_username)
         self.write('#username', my_username)
-        # self.assert_text(my_username)
         self.click('#connect')
 
         # Send a message by pressing send button
@@ -131,6 +130,43 @@ class MyTestClass(BaseCase):
         some_other_text = 'some other text'
         self.write('#chatinput', f'{some_other_text}\n')
         self.assert_text(some_other_text)
+
+    def test_chat_two_people(self):
+        """ Make sure chat between 2 people work """
+        # Connect with robot1
+        self.open(self.FRONTEND_ADDRESS)
+        self.click('#chat')
+        my_username1 = 'robot1'
+        self.write('#username', my_username1)
+        self.click('#connect')
+        # Send message from robot1
+        some_text1 = 'sometext1'
+        self.write('#chatinput', some_text1)
+        self.click('#sendmessage')
+        self.assert_text('You')
+        self.assert_text(some_text1)
+
+        # Connect with robot2
+        self.open_new_window(True)
+        self.open(self.FRONTEND_ADDRESS)
+        self.click('#chat')
+        my_username2 = 'robot2'
+        self.write('#username', my_username2)
+        self.click('#connect')
+        # Make sure robot1's messages are visible from robot2
+        self.assert_text(my_username1)
+        self.assert_text(some_text1)
+        # Send message from robot2
+        some_text2 = 'sometext2'
+        self.write('#chatinput', some_text2)
+        self.click('#sendmessage')
+        self.assert_text('You')
+        self.assert_text(some_text2)
+
+        # Make sure robot2's messages are visible from robot1
+        self.switch_to_window(0)
+        self.assert_text(my_username2)
+        self.assert_text(some_text2)
 
 
 if __name__ == '__main__':

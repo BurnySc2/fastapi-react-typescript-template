@@ -182,7 +182,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Install npm dependencies
+    - name: Deploy backend
       run: |
         rm -rf data
     # TODO Stop/disable service, upload to server, update poetry packages, start/enable service

@@ -145,6 +145,10 @@ dmypy.json
 # Tailwindcss
 frontend/src/index.css
 
+# Seleniumbase
+/archived_logs
+/latest_logs
+
 # misc
 .DS_Store
 .env.local

@@ -18,6 +18,8 @@ SQLITE_FILENAME: str = ENV.get('SQLITE_FILENAME', 'todos.db')
 todo_list_router = APIRouter()
 db: Optional[sqlite3.Connection] = None
 
+# TODO Communicate with postgresql and mongodb
+
 
 def get_db() -> Optional[sqlite3.Connection]:
     return db

@@ -1,74 +1,81 @@
-import os
-import signal
-import time
+from test.tester_helper import find_next_free_port, get_website_address, kill_processes, start_frontend_dev_server
 from typing import Optional, Set
 
 import pytest
-from loguru import logger
 from pytest_benchmark.fixture import BenchmarkFixture
 
 # see https://github.com/seleniumbase/SeleniumBase
 # https://seleniumbase.io/
 from seleniumbase import BaseCase
 
-from test_integration.tester_helper import find_next_free_port, get_website_address, start_frontend_dev_server
-
 # Set in setup_module()
-WEBSITE_ADDRESS = ''
+FRONTEND_ADDRESS = ''
 # Remember which node processes to close
 NEWLY_CREATED_NODE_PROCESSES: Set[int] = set()
 
 
 def setup_module():
+    """ Setup module can stay here because each new connection doesn't require a restart of frontend server """
     # pylint: disable=W0603
-    global WEBSITE_ADDRESS
+    global FRONTEND_ADDRESS
     """
     See https://docs.pytest.org/en/6.2.x/xunit_setup.html
     """
     port = find_next_free_port()
-    WEBSITE_ADDRESS = get_website_address(port)
+    FRONTEND_ADDRESS = get_website_address(port)
     start_frontend_dev_server(port, NEWLY_CREATED_NODE_PROCESSES)
 
 
 def teardown_module():
     # Stop frontend server
-
-    # Soft kill
-    for pid in NEWLY_CREATED_NODE_PROCESSES:
-        logger.info(f'Killing {pid}')
-        os.kill(pid, signal.SIGTERM)
-    time.sleep(1)
-
-    # Force kill
-    for pid in NEWLY_CREATED_NODE_PROCESSES:
-        logger.info(f'Force killing {pid}')
-        try:
-            os.kill(pid, signal.SIGKILL)
-        except ProcessLookupError:
-            pass
+    kill_processes(NEWLY_CREATED_NODE_PROCESSES)
+    NEWLY_CREATED_NODE_PROCESSES.clear()
 
 
 class MyTestClass(BaseCase):
     def test_basic_site_display(self):
         """ Check if HOME site is visible """
-        self.open(WEBSITE_ADDRESS)
+        self.open(FRONTEND_ADDRESS)
         self.assert_text('Hello world!')
 
     def test_shows_todos(self):
         """ Check if the to-do site is visible """
-        self.open(WEBSITE_ADDRESS)
+        self.open(FRONTEND_ADDRESS)
         self.click('#todo')
         self.assert_text('Unable to connect to server - running local mode')
 
-    def test_add_todo(self):
+    def test_add_todo_submit1(self):
         """ Add a new to-do entry """
-        self.open(WEBSITE_ADDRESS)
+        self.open(FRONTEND_ADDRESS)
         self.click('#todo')
         self.assert_text('Unable to connect to server - running local mode')
-        test_text = 'my amazing test todo text'
+        test_text = 'my amazing test todo text1'
         self.write('#newTodoInput', test_text)
         self.click('#submit1')
         self.assert_text(test_text)
+        self.assert_text('Unable to connect to server - running local mode')
+
+    def test_add_todo_submit2(self):
+        """ Add a new to-do entry """
+        self.open(FRONTEND_ADDRESS)
+        self.click('#todo')
+        self.assert_text('Unable to connect to server - running local mode')
+        test_text = 'my amazing test todo text2'
+        self.write('#newTodoInput', test_text)
+        self.click('#submit2')
+        self.assert_text(test_text)
+        self.assert_text('Unable to connect to server - running local mode')
+
+    def test_add_todo_submit3(self):
+        """ Add a new to-do entry """
+        self.open(FRONTEND_ADDRESS)
+        self.click('#todo')
+        self.assert_text('Unable to connect to server - running local mode')
+        test_text = 'my amazing test todo text3'
+        self.write('#newTodoInput', test_text)
+        self.click('#submit3')
+        self.assert_text(test_text)
+        self.assert_text('Unable to connect to server - running local mode')
 
     def test_example(self):
         url = 'https://store.xkcd.com/collections/posters'
@@ -112,7 +119,7 @@ class MyBenchClass(BaseCase):
 
     def basic_site_display(self):
         """ Check if HOME site is visible """
-        self.open(WEBSITE_ADDRESS)
+        self.open(FRONTEND_ADDRESS)
         self.assert_text('Hello world!')
 
     def test_bench_basic_site_display(self):
@@ -121,7 +128,7 @@ class MyBenchClass(BaseCase):
 
     def add_todo(self):
         """ Add a new to-do entry """
-        self.open(WEBSITE_ADDRESS)
+        self.open(FRONTEND_ADDRESS)
         self.click('#todo')
         self.assert_text('Unable to connect to server - running local mode')
         test_text = 'my amazing test todo text'

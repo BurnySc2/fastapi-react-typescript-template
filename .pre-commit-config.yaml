@@ -182,7 +182,7 @@ repos:
     name: e2e test
     stages: [commit]
     language: system
-    entry: poetry run pytest test_integration/test_e2e.py
+    entry: poetry run pytest test/test_e2e.py
     pass_filenames: false
 
   # Run integration tests, takes too long
@@ -190,5 +190,5 @@ repos:
 #    name: integration test
 #    stages: [commit]
 #    language: system
-#    entry: poetry run pytest test_integration/test_integration.py
+#    entry: poetry run pytest test/test_integration.py
 #    pass_filenames: false

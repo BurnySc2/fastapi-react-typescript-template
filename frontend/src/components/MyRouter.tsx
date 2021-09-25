@@ -1,7 +1,7 @@
 import React from 'react'
 import { HashRouter, Switch, Route, Link } from 'react-router-dom'
 import About from '../pages/About'
-import Chat from '../pages/Chat'
+import NormalChat from '../pages/NormalChat'
 import TodoPage from '../pages/TodoPage'
 import HomePage from '../pages/Home'
 
@@ -18,7 +18,7 @@ export default function MyRouter(): JSX.Element {
                         About
                     </Link>
                     <Link id="chat" className="mx-2 p-1 border-2" to="/chat">
-                        Chat
+                        NormalChat
                     </Link>
                     <Link id="todo" className="mx-2 p-1 border-2" to="/todo">
                         Todo
@@ -31,7 +31,7 @@ export default function MyRouter(): JSX.Element {
                         <About />
                     </Route>
                     <Route path="/chat">
-                        <Chat />
+                        <NormalChat />
                     </Route>
                     <Route path="/todo">
                         <TodoPage />

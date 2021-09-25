@@ -115,7 +115,7 @@ def generate_css_file():
 def start_frontend_dev_server(
     port: int,
     NEWLY_CREATED_PROCESSES: Set[int],
-    backend_proxy: str = 'http://localhost:8000',
+    backend_proxy: str = 'localhost:8000',
 ):
     env = os.environ.copy()
     # Set port for dev server
@@ -125,7 +125,8 @@ def start_frontend_dev_server(
     # Which ip and port to use when sending fetch requests to api
     # Only REACT_APP_ prefixed env variables will be forwarded to the app: console.log(process.env)
     # https://create-react-app.dev/docs/adding-custom-environment-variables
-    env['REACT_APP_PROXY'] = backend_proxy
+    env['REACT_APP_PROXY'] = f'http://{backend_proxy}'
+    env['REACT_APP_WEBSOCKET'] = f'ws://{backend_proxy}'
 
     currently_running_node_processes = get_pid('node')
 
@@ -133,11 +134,13 @@ def start_frontend_dev_server(
     generate_css_file()
 
     frontend_folder = Path(__file__).parent.parent / 'frontend'
-    logger.info(f'Starting frontend on port {port}, using backend proxy {backend_proxy}')
+    logger.info(
+        f"Starting frontend on port {port}, using backend proxy {env['REACT_APP_PROXY']} and websocket address {env['REACT_APP_WEBSOCKET']}",
+    )
     _ = subprocess.Popen(['npx', 'react-scripts', 'start'], cwd=frontend_folder, env=env)
 
     # Give it some time to create dev server and all (3?) node proccesses
-    time.sleep(5)
+    time.sleep(3)
     new_processes = get_pid('node') - currently_running_node_processes
     logger.info(f'New node processes: {new_processes}')
     NEWLY_CREATED_PROCESSES |= new_processes
@@ -260,6 +263,22 @@ def start_postgres(postgres_port: int = 5432) -> int:
     else:
         raise NotImplementedError()
     return postgres_port
+
+
+def kill_processes(processes: Set[int]):
+    # Soft kill
+    for pid in processes:
+        logger.info(f'Killing {pid}')
+        os.kill(pid, signal.SIGTERM)
+    time.sleep(.1)
+
+    # Force kill
+    for pid in processes:
+        logger.info(f'Force killing {pid}')
+        try:
+            os.kill(pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
 
 
 if __name__ == '__main__':

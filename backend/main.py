@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from loguru import logger
 
 from backend.routes.chat import chat_router
-from backend.routes.hello_world import hello_world_router
+from backend.routes.hello_world import background_task_function, hello_world_router
 from backend.routes.todolist import create_database_if_not_exist, get_db, todo_list_router
 
 ENV = os.environ.copy()
@@ -18,8 +18,8 @@ app.include_router(chat_router)
 app.include_router(todo_list_router)
 
 origins = [
-    'http://localhost',
-    'http://localhost:8000',
+    # 'http://localhost',
+    # 'http://localhost:8000',
     # The following 3 dont work, how to make it work so only this address can speak to api server?
     # 'https://burnysc2.github.io/fastapi-react-typescript-template',
     # 'https://burnysc2.github.io/fastapi-react-typescript-template/#/',
@@ -50,13 +50,6 @@ def shutdown_event():
     if db():
         db.close()
     logger.info('Bye world!')
-
-
-async def background_task_function(my_text: str, other_text: str = ' something!'):
-    """A background function that gets called once"""
-    while 1:
-        await asyncio.sleep(60 * 60)
-        logger.info(f'Repeated {my_text}{other_text}')
 
 
 if __name__ == '__main__':

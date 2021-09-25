@@ -113,7 +113,7 @@ jobs:
 
     - name: Run e2e tests
       run: |
-        poetry run pytest test_integration/test_e2e.py
+        poetry run pytest test/test_e2e.py
 
   test_integration:
     strategy:
@@ -170,7 +170,7 @@ jobs:
 
     - name: Run integration tests
       run: |
-        poetry run pytest test_integration/test_integration.py
+        poetry run pytest test/test_integration.py
 
   deploy_backend:
     strategy:
@@ -190,6 +190,7 @@ jobs:
   deploy_frontend:
     env:
       REACT_APP_PROXY: http://localhost:8000
+      REACT_APP_WEBSOCKET: ws://localhost:8000
     strategy:
       matrix:
         os: [ubuntu-latest]

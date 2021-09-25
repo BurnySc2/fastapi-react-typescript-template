@@ -9,7 +9,7 @@
 
 - Python 3.7 or newer (for backend and e2e/integration tests)
 - Node.js 12+ (for frontend)
-- Docker (for tests)
+- Docker (for e2e/integration test)
 
 # Installation
 
@@ -77,7 +77,7 @@ npm run test
 Start frontend dev server, then click a few buttons and make sure the site loads correctly (and how quickly, with benchmark tests).
 
 ```
-poetry run pytest test_integration/test_e2e.py
+poetry run pytest test/test_e2e.py
 ```
 
 ## Integration test
@@ -85,7 +85,7 @@ poetry run pytest test_integration/test_e2e.py
 Start backend and frontend server, then make sure that server responses are correct.
 
 ```
-poetry run pytest test_integration/test_integration.py
+poetry run pytest test/test_integration.py
 ```
 
 # Install and run all pre-commit hook scripts

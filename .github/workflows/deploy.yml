@@ -183,6 +183,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Deploy backend
+      if: github.ref == 'refs/heads/master'
       run: |
         rm -rf data
     # TODO Stop/disable service, upload to server, update poetry packages, start/enable service
@@ -223,6 +224,7 @@ jobs:
         npm run build
 
     - name: Publish to Github Pages
+      if: github.ref == 'refs/heads/master'
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
         ACCESS_TOKEN: ${{ secrets.GITHUB_PAGES_TOKEN }}

@@ -326,7 +326,7 @@ test = ["Cython (==0.29.22)"]
 
 [[package]]
 name = "hypothesis"
-version = "6.22.0"
+version = "6.23.0"
 description = "A library for property-based testing"
 category = "dev"
 optional = false
@@ -409,7 +409,7 @@ toml = {version = ">=0.10.2", markers = "python_version > \"3.6\""}
 
 [[package]]
 name = "ipython"
-version = "7.27.0"
+version = "7.28.0"
 description = "IPython: Productive Interactive Computing"
 category = "dev"
 optional = false
@@ -690,7 +690,7 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "platformdirs"
-version = "2.3.0"
+version = "2.4.0"
 description = "A small Python module for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 category = "dev"
 optional = false
@@ -1092,7 +1092,7 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
 name = "rich"
-version = "10.10.0"
+version = "10.11.0"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 category = "dev"
 optional = false
@@ -1132,7 +1132,7 @@ urllib3 = "*"
 
 [[package]]
 name = "seleniumbase"
-version = "1.66.1"
+version = "1.66.2"
 description = "A complete web automation framework for end-to-end testing."
 category = "dev"
 optional = false
@@ -1155,7 +1155,7 @@ fasteners = {version = "0.16.3", markers = "python_version >= \"3.5\""}
 filelock = "3.0.12"
 idna = {version = "3.2", markers = "python_version >= \"3.6\""}
 ipdb = {version = "0.13.9", markers = "python_version >= \"3.5\""}
-ipython = {version = "7.27.0", markers = "python_version >= \"3.7\""}
+ipython = {version = "7.28.0", markers = "python_version >= \"3.7\""}
 jedi = {version = "0.18.0", markers = "python_version >= \"3.6\""}
 matplotlib-inline = {version = "0.1.3", markers = "python_version >= \"3.7\""}
 more-itertools = {version = "8.10.0", markers = "python_version >= \"3.5\""}
@@ -1166,7 +1166,7 @@ parameterized = "0.8.1"
 parso = {version = "0.8.2", markers = "python_version >= \"3.6\""}
 "pdfminer.six" = {version = "20201018", markers = "python_version >= \"3.5\""}
 Pillow = {version = "8.3.2", markers = "python_version >= \"3.6\""}
-platformdirs = {version = "2.3.0", markers = "python_version >= \"3.6\""}
+platformdirs = {version = "2.4.0", markers = "python_version >= \"3.6\""}
 pluggy = {version = "1.0.0", markers = "python_version >= \"3.6\""}
 prompt-toolkit = {version = "3.0.20", markers = "python_version >= \"3.6.2\""}
 py = {version = "1.10.0", markers = "python_version >= \"3.5\""}
@@ -1183,7 +1183,7 @@ pytest-rerunfailures = {version = "10.2", markers = "python_version >= \"3.6\""}
 pytest-xdist = {version = "2.4.0", markers = "python_version >= \"3.6\""}
 PyYAML = {version = ">=5.4.1", markers = "python_version >= \"3.6\""}
 requests = {version = "2.26.0", markers = "python_version >= \"3.6\""}
-rich = {version = "10.10.0", markers = "python_version >= \"3.6\" and python_version < \"4.0\""}
+rich = {version = "10.11.0", markers = "python_version >= \"3.6\" and python_version < \"4.0\""}
 sbvirtualdisplay = "1.0.0"
 selenium = "3.141.0"
 setuptools-scm = {version = ">=6.3.2", markers = "python_version >= \"3.6\""}
@@ -1195,8 +1195,8 @@ tomli = {version = ">=1.2.1", markers = "python_version >= \"3.6\""}
 tornado = {version = "6.1", markers = "python_version >= \"3.5\""}
 traitlets = {version = "5.1.0", markers = "python_version >= \"3.7\""}
 typing-extensions = ">=3.10.0.2"
-urllib3 = "1.26.6"
-virtualenv = ">=20.8.0"
+urllib3 = "1.26.7"
+virtualenv = ">=20.8.1"
 
 [package.extras]
 coverage = ["coverage (==5.5)", "pytest-cov (==2.12.1)"]
@@ -1317,7 +1317,7 @@ typing-extensions = ">=3.7.4"
 
 [[package]]
 name = "urllib3"
-version = "1.26.6"
+version = "1.26.7"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 category = "dev"
 optional = false
@@ -1451,7 +1451,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytes
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.7 <3.11"
-content-hash = "7337b156f92726e1483b60b8cc4449a824a21d7778813e5eca445b7fc11237aa"
+content-hash = "ed3da6cd400dfff8385d383e3906002fa296db47bdbf0878759fceb21c16c8bc"
 
 [metadata.files]
 appnope = [
@@ -1695,8 +1695,8 @@ httptools = [
     {file = "httptools-0.2.0.tar.gz", hash = "sha256:94505026be56652d7a530ab03d89474dc6021019d6b8682281977163b3471ea0"},
 ]
 hypothesis = [
-    {file = "hypothesis-6.22.0-py3-none-any.whl", hash = "sha256:861452dc2b9ef63a7f8f7477af3d086ae3788ef444ee6de1377923a5d5ba6dc4"},
-    {file = "hypothesis-6.22.0.tar.gz", hash = "sha256:3c297228cfea7665b10afccb6a7c3e509c2bc4b477bdbe89e00080280368eca7"},
+    {file = "hypothesis-6.23.0-py3-none-any.whl", hash = "sha256:00a6bf77f9109c02de9aa4605a6ca6cdd3bbe1b2ba22622290cfd5a2e243d5a1"},
+    {file = "hypothesis-6.23.0.tar.gz", hash = "sha256:232e824b68809b6d4872fafc8eef37e6587148b0aa469a5eae626f46e21b58d9"},
 ]
 identify = [
     {file = "identify-2.2.15-py2.py3-none-any.whl", hash = "sha256:de83a84d774921669774a2000bf87ebba46b4d1c04775f4a5d37deff0cf39f73"},
@@ -1718,8 +1718,8 @@ ipdb = [
     {file = "ipdb-0.13.9.tar.gz", hash = "sha256:951bd9a64731c444fd907a5ce268543020086a697f6be08f7cc2c9a752a278c5"},
 ]
 ipython = [
-    {file = "ipython-7.27.0-py3-none-any.whl", hash = "sha256:75b5e060a3417cf64f138e0bb78e58512742c57dc29db5a5058a2b1f0c10df02"},
-    {file = "ipython-7.27.0.tar.gz", hash = "sha256:58b55ebfdfa260dad10d509702dc2857cb25ad82609506b070cf2d7b7df5af13"},
+    {file = "ipython-7.28.0-py3-none-any.whl", hash = "sha256:f16148f9163e1e526f1008d7c8d966d9c15600ca20d1a754287cf96d00ba6f1d"},
+    {file = "ipython-7.28.0.tar.gz", hash = "sha256:2097be5c814d1b974aea57673176a924c4c8c9583890e7a5f082f547b9975b11"},
 ]
 isort = [
     {file = "isort-5.9.3-py3-none-any.whl", hash = "sha256:e17d6e2b81095c9db0a03a8025a957f334d6ea30b26f9ec70805411e5c7c81f2"},
@@ -1903,8 +1903,8 @@ pillow = [
     {file = "Pillow-8.3.2.tar.gz", hash = "sha256:dde3f3ed8d00c72631bc19cbfff8ad3b6215062a5eed402381ad365f82f0c18c"},
 ]
 platformdirs = [
-    {file = "platformdirs-2.3.0-py3-none-any.whl", hash = "sha256:8003ac87717ae2c7ee1ea5a84a1a61e87f3fbd16eb5aadba194ea30a9019f648"},
-    {file = "platformdirs-2.3.0.tar.gz", hash = "sha256:15b056538719b1c94bdaccb29e5f81879c7f7f0f4a153f46086d155dffcd4f0f"},
+    {file = "platformdirs-2.4.0-py3-none-any.whl", hash = "sha256:8868bbe3c3c80d42f20156f22e7131d2fb321f5bc86a2a345375c6481a67021d"},
+    {file = "platformdirs-2.4.0.tar.gz", hash = "sha256:367a5e80b3d04d2428ffa76d33f124cf11e8fff2acdaa9b43d545f5c7d661ef2"},
 ]
 pluggy = [
     {file = "pluggy-1.0.0-py2.py3-none-any.whl", hash = "sha256:74134bbf457f031a36d68416e1509f34bd5ccc019f0bcc952c7b909d06b37bd3"},
@@ -2219,8 +2219,8 @@ requests = [
     {file = "requests-2.26.0.tar.gz", hash = "sha256:b8aa58f8cf793ffd8782d3d8cb19e66ef36f7aba4353eec859e74678b01b07a7"},
 ]
 rich = [
-    {file = "rich-10.10.0-py3-none-any.whl", hash = "sha256:0b8cbcb0b8d476a7f002feaed9f35e51615f673c6c291d76ddf0c555574fd3c7"},
-    {file = "rich-10.10.0.tar.gz", hash = "sha256:bacf58b25fea6b920446fe4e7abdc6c7664c4530c4098e7a1bc79b16b8551dfa"},
+    {file = "rich-10.11.0-py3-none-any.whl", hash = "sha256:44bb3f9553d00b3c8938abf89828df870322b9ba43caf3b12bb7758debdc6dec"},
+    {file = "rich-10.11.0.tar.gz", hash = "sha256:016fa105f34b69c434e7f908bb5bd7fefa9616efdb218a2917117683a6394ce5"},
 ]
 sbvirtualdisplay = [
     {file = "sbvirtualdisplay-1.0.0-py3-none-any.whl", hash = "sha256:9776d67bd872ff54f178bad07743ff9f20e80d6b4073af389ded8ba7a66ead04"},
@@ -2231,8 +2231,8 @@ selenium = [
     {file = "selenium-3.141.0.tar.gz", hash = "sha256:deaf32b60ad91a4611b98d8002757f29e6f2c2d5fcaf202e1c9ad06d6772300d"},
 ]
 seleniumbase = [
-    {file = "seleniumbase-1.66.1-py2.py3-none-any.whl", hash = "sha256:36adc94ea4553bd94999cbf2c85904d506940bdf41859033e14cffe3d1de300e"},
-    {file = "seleniumbase-1.66.1.tar.gz", hash = "sha256:0b64d3637a5c998f88969d3c5560de385961cca90dbb4a7642412128dc90b044"},
+    {file = "seleniumbase-1.66.2-py2.py3-none-any.whl", hash = "sha256:cca39dab82cf773f4e1100cac57b57186e8dd518c6f26fd7e4921537a478b802"},
+    {file = "seleniumbase-1.66.2.tar.gz", hash = "sha256:4a27188a19f03b720463af98d4c912ab56ba04e72e3bcb5246e09a96a85dd3fc"},
 ]
 setuptools-scm = [
     {file = "setuptools_scm-6.3.2-py3-none-any.whl", hash = "sha256:4c64444b1d49c4063ae60bfe1680f611c8b13833d556fd1d6050c0023162a119"},
@@ -2352,8 +2352,8 @@ typing-inspect = [
     {file = "typing_inspect-0.7.1.tar.gz", hash = "sha256:047d4097d9b17f46531bf6f014356111a1b6fb821a24fe7ac909853ca2a782aa"},
 ]
 urllib3 = [
-    {file = "urllib3-1.26.6-py2.py3-none-any.whl", hash = "sha256:39fb8672126159acb139a7718dd10806104dec1e2f0f6c88aab05d17df10c8d4"},
-    {file = "urllib3-1.26.6.tar.gz", hash = "sha256:f57b4c16c62fa2760b7e3d97c35b255512fb6b59a259730f36ba32ce9f8e342f"},
+    {file = "urllib3-1.26.7-py2.py3-none-any.whl", hash = "sha256:c4fdf4019605b6e5423637e01bc9fe4daef873709a7973e195ceba0a62bbc844"},
+    {file = "urllib3-1.26.7.tar.gz", hash = "sha256:4987c65554f7a2dbf30c18fd48778ef124af6fab771a377103da0585e2336ece"},
 ]
 uvicorn = [
     {file = "uvicorn-0.15.0-py3-none-any.whl", hash = "sha256:17f898c64c71a2640514d4089da2689e5db1ce5d4086c2d53699bf99513421c1"},

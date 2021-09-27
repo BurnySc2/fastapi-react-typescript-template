@@ -156,18 +156,21 @@ repos:
     stages: [commit]
     language: system
     entry: sh -c "cd frontend && npm run eslint"
+    pass_filenames: false
 
   - id: prettier
     name: prettier
     stages: [commit]
     language: system
     entry: sh -c "cd frontend && npm run format"
+    pass_filenames: false
 
   - id: jest_frontend_test
     name: jest frontend test
     stages: [commit]
     language: system
     entry: sh -c "cd frontend && npm run test"
+    pass_filenames: false
 
 # too cpu heavy
 #  - id: npm-build

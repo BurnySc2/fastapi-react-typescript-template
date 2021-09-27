@@ -30,7 +30,7 @@ mypy = "^0.910"
 # Requirement for pytest < 3.8
 importlib_metadata = "^1.7"
 # Statistical testing
-hypothesis = "^6.22"
+hypothesis = "^6.23"
 # Cyclomatic complexity checker
 radon = "^5.0"
 # Enable pre commit hooks

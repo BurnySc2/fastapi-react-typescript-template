@@ -19,6 +19,8 @@ app.include_router(todo_list_router)
 
 origins = [
     'https://burnysc2.github.io',
+    'http://localhost:3000',
+    'https://localhost:3000',
 ]
 
 app.add_middleware(

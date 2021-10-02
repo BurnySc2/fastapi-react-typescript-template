@@ -269,7 +269,10 @@ def kill_processes(processes: Set[int]):
     # Soft kill
     for pid in processes:
         logger.info(f'Killing {pid}')
-        os.kill(pid, signal.SIGTERM)
+        try:
+            os.kill(pid, signal.SIGTERM)
+        except ProcessLookupError:
+            pass
     time.sleep(.1)
 
     # Force kill

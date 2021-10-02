@@ -18,14 +18,7 @@ app.include_router(chat_router)
 app.include_router(todo_list_router)
 
 origins = [
-    # 'http://localhost',
-    # 'http://localhost:8000',
-    # The following 3 dont work, how to make it work so only this address can speak to api server?
-    # 'https://burnysc2.github.io/fastapi-react-typescript-template',
-    # 'https://burnysc2.github.io/fastapi-react-typescript-template/#/',
-    # 'https://burnysc2.github.io/fastapi-react-typescript-template/#/todo',
-    # TODO UNSAFE: Remove me
-    '*',
+    'https://burnysc2.github.io',
 ]
 
 app.add_middleware(

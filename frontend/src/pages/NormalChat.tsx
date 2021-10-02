@@ -1,19 +1,19 @@
-import React, { KeyboardEvent, useEffect, useState } from 'react'
-import { Message, ChatMessage } from '../components/ChatMessage'
+import React, { KeyboardEvent, useEffect, useState } from "react"
+import { Message, ChatMessage } from "../components/ChatMessage"
 
 export default function NormalChat(): JSX.Element {
     // Accepted username by server
-    const [userName, setUserName] = useState('')
+    const [userName, setUserName] = useState("")
     // Username in the "your username" input field
-    const [selectedUserName, SetSelectedUserName] = useState('')
+    const [selectedUserName, SetSelectedUserName] = useState("")
     // When sending the username to server, do not allow client to send new requests (this field will be filled with the username)
-    const [waitingForUserNameResponse, setWaitingForUserNameResponse] = useState('')
+    const [waitingForUserNameResponse, setWaitingForUserNameResponse] = useState("")
     // The chat message the user is about to send
-    const [chatMessage, setChatMessage] = useState('')
-    const [errorMessage, setErrorMessage] = useState('')
+    const [chatMessage, setChatMessage] = useState("")
+    const [errorMessage, setErrorMessage] = useState("")
     // All chat messages in the chat
     const [messages, setMessages] = useState<Message[]>([
-        { timestamp: 123, author: 'yolo', message: 'example message' },
+        { timestamp: 123, author: "yolo", message: "example message" },
     ])
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export default function NormalChat(): JSX.Element {
     const connect = () => {
         const address = process.env.REACT_APP_WEBSOCKET
         if (!address) {
-            console.error(`process.env.REACT_APP_WEBSOCKET is not set! Check your Env variables`)
+            console.error("process.env.REACT_APP_WEBSOCKET is not set! Check your Env variables")
         }
         const ws = new WebSocket(`${address}/chatws`)
         ws.onmessage = (event) => {
@@ -34,36 +34,36 @@ export default function NormalChat(): JSX.Element {
                 const content = JSON.parse(event.data)
                 console.log(`Received: ${Object.keys(content)}`)
                 // console.log(JSON.stringify(content))
-                if ('message' in content) {
+                if ("message" in content) {
                     // Received example message
                     console.log(`Received: ${content.message}`)
-                } else if ('error' in content) {
+                } else if ("error" in content) {
                     // Error handling
-                    if (content.error === 'usernameTaken') {
+                    if (content.error === "usernameTaken") {
                         setErrorMessage(`Username '${waitingForUserNameResponse}' is already taken!`)
-                        setWaitingForUserNameResponse('')
+                        setWaitingForUserNameResponse("")
                     }
-                } else if ('newMessage' in content) {
+                } else if ("newMessage" in content) {
                     // Received new message
                     // console.log(`Received new message: ${JSON.stringify(content.newMessage)}`)
                     // Why doesn't this work
                     // setMessages([...messages, content.newMessage])
                     setMessages((messages) => [...messages, content.newMessage])
-                } else if ('newMessageHistory' in content) {
+                } else if ("newMessageHistory" in content) {
                     // Received new message
                     // console.log(`Received new message history: ${JSON.stringify(content.newMessageHistory)}`)
                     setMessages([...content.newMessageHistory])
-                } else if ('connectUser' in content) {
+                } else if ("connectUser" in content) {
                     // User connected, server accepted the username
                     console.log(`Successfully connected to server with username ${content.connectUser}`)
-                    setErrorMessage('')
-                    setWaitingForUserNameResponse('')
+                    setErrorMessage("")
+                    setWaitingForUserNameResponse("")
                     setMessages([])
                     setUserName(content.connectUser)
                 }
             } catch {
                 // Message was not in JSON format
-                console.log('Received unreadable data!')
+                console.log("Received unreadable data!")
                 console.log(event.data)
             }
         }
@@ -76,7 +76,7 @@ export default function NormalChat(): JSX.Element {
         }
         ws.onopen = () => {
             if (ws) {
-                const message = JSON.stringify({ message: 'Hello from client!' })
+                const message = JSON.stringify({ message: "Hello from client!" })
                 ws.send(message)
             }
         }
@@ -90,34 +90,34 @@ export default function NormalChat(): JSX.Element {
 
     const tryToConnectUser = async () => {
         // Send a username to the server and see if it is available
-        setErrorMessage('')
+        setErrorMessage("")
         if (ws && ws.readyState === 1) {
             console.log(`Trying to connect as user '${selectedUserName}'`)
-            if (waitingForUserNameResponse === '') {
+            if (waitingForUserNameResponse === "") {
                 setWaitingForUserNameResponse(selectedUserName)
                 ws.send(
                     JSON.stringify({
                         tryToConnectUser: selectedUserName,
-                    }),
+                    })
                 )
             }
         } else {
-            setErrorMessage('WebSocket is not yet ready!')
+            setErrorMessage("WebSocket is not yet ready!")
         }
     }
 
     const handleKeydown = async (e: KeyboardEvent<HTMLInputElement>) => {
         // Or use e.code: "NumpadEnter or "Enter" for more specific handling
-        if (e.key === 'Enter') {
+        if (e.key === "Enter") {
             await sendChatMessage()
         }
     }
 
     const sendChatMessage = async () => {
-        console.log('Trying to send chat message...')
-        if (chatMessage !== '') {
+        console.log("Trying to send chat message...")
+        if (chatMessage !== "") {
             if (ws && ws.readyState === 1) {
-                if (userName !== '') {
+                if (userName !== "") {
                     // TODO Once we send a message, we should receive a 'newMessage' within the next 2 seconds - disconnect (=set username to "") if none received
                     ws.send(
                         JSON.stringify({
@@ -126,12 +126,12 @@ export default function NormalChat(): JSX.Element {
                                 author: userName,
                                 message: chatMessage,
                             },
-                        }),
+                        })
                     )
-                    setChatMessage('')
+                    setChatMessage("")
                 }
             } else {
-                console.log('Unable to send message - WS not yet ready')
+                console.log("Unable to send message - WS not yet ready")
             }
         }
     }
@@ -142,7 +142,7 @@ export default function NormalChat(): JSX.Element {
     })
 
     let userNameInputField: JSX.Element
-    if (waitingForUserNameResponse === '') {
+    if (waitingForUserNameResponse === "") {
         userNameInputField = (
             <input
                 id="username"
@@ -163,7 +163,7 @@ export default function NormalChat(): JSX.Element {
     }
 
     let rendered_site: JSX.Element
-    if (userName === '') {
+    if (userName === "") {
         // Before connection
         rendered_site = (
             <div className="flex flex-col m-2 border border-2 border-black items-center">
@@ -187,7 +187,7 @@ export default function NormalChat(): JSX.Element {
                         id="chatinput"
                         className="col-span-9 border-2"
                         type="text"
-                        placeholder={'Write something!'}
+                        placeholder={"Write something!"}
                         value={chatMessage}
                         onChange={(e) => {
                             setChatMessage(e.target.value)

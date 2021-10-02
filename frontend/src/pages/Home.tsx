@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react"
 
 export default function HomePage(): JSX.Element {
-    const name = 'world'
+    const name = "world"
     return (
         <div className="text-center my-2">
             <div>Hello {name}!</div>

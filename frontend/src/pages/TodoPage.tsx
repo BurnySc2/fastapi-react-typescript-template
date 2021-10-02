@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import TodoItem from '../components/TodoItem'
-import { delete_, get, post } from '../functions/fetch_helper'
+import React, { useEffect, useState } from "react"
+import TodoItem from "../components/TodoItem"
+import { delete_, get, post } from "../functions/fetch_helper"
 
 type ITodoItem = {
     id: number
@@ -8,7 +8,7 @@ type ITodoItem = {
 }
 
 export default function TodoPage(): JSX.Element {
-    const [newTodoText, setNewTodoText] = useState('')
+    const [newTodoText, setNewTodoText] = useState("")
     const [todos, setTodos] = useState<ITodoItem[]>([])
     const [APIserverIsResponding, setAPIserverIsResponding] = useState(true)
 
@@ -18,7 +18,7 @@ export default function TodoPage(): JSX.Element {
 
     const getTodos = async () => {
         try {
-            const response = await get(`/api`)
+            const response = await get("/api")
             if (response.ok) {
                 setTodos(await response.json())
                 setAPIserverIsResponding(true)
@@ -43,25 +43,25 @@ export default function TodoPage(): JSX.Element {
         } else {
             localSubmit()
         }
-        setNewTodoText('')
+        setNewTodoText("")
         await getTodos()
     }
 
     const submitPressedBody = async () => {
         if (APIserverIsResponding) {
-            await post(`/api_body`, {
+            await post("/api_body", {
                 new_todo: newTodoText,
             })
         } else {
             localSubmit()
         }
-        setNewTodoText('')
+        setNewTodoText("")
         await getTodos()
     }
 
     const submitPressedModel = async () => {
         if (APIserverIsResponding) {
-            const response = await post(`/api_model`, {
+            const response = await post("/api_model", {
                 todo_description: newTodoText,
             })
             if (!response.ok) {
@@ -72,7 +72,7 @@ export default function TodoPage(): JSX.Element {
         } else {
             localSubmit()
         }
-        setNewTodoText('')
+        setNewTodoText("")
         await getTodos()
     }
 
@@ -92,7 +92,7 @@ export default function TodoPage(): JSX.Element {
             maxIndex = Math.max(todo.id, maxIndex)
         })
         setTodos([...todos, { id: maxIndex + 1, content: newTodoText }])
-        setNewTodoText('')
+        setNewTodoText("")
     }
 
     const localRemove = (id: number) => {
@@ -132,7 +132,7 @@ export default function TodoPage(): JSX.Element {
     }
 
     const renderApiServerResponding = APIserverIsResponding ? (
-        ''
+        ""
     ) : (
         <div className="bg-red-300 rounded p-1">Unable to connect to server - running local mode</div>
     )

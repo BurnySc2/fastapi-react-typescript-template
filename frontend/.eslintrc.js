@@ -25,5 +25,10 @@ module.exports = {
     },
     rules: {
         "@typescript-eslint/ban-ts-comment": 0,
+        "curly": "error",
+        "quotes": ["error", "double"],
+        "@typescript-eslint/no-var-requires": 0,
+        "@typescript-eslint/no-extra-semi": 0,
+        "@typescript-eslint/no-unused-vars": ["warn", { argsIgnorePattern: "^_", varsIgnorePattern: "^_" }],
     },
 }

@@ -3,7 +3,7 @@ const fetch2 = async (url: string, requestOptions: RequestInit = {}): Promise<Re
     // If env variable is not set, use empty string and use default from package.json "proxy"
     const address = process.env.REACT_APP_PROXY
     if (!address) {
-        console.error(`process.env.REACT_APP_PROXY is not set! Check your Env variables`)
+        console.error("process.env.REACT_APP_PROXY is not set! Check your Env variables")
     }
     return await fetch(`${address}${url}`, requestOptions)
 }
@@ -14,9 +14,9 @@ export const get = async (url: string): Promise<Response> => {
 
 export const post = async (url: string, body: Record<string, unknown> = {}): Promise<Response> => {
     const requestOptions = {
-        method: 'POST',
+        method: "POST",
         headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
     }
@@ -25,7 +25,7 @@ export const post = async (url: string, body: Record<string, unknown> = {}): Pro
 
 export const delete_ = async (url: string): Promise<Response> => {
     const requestOptions = {
-        method: 'DELETE',
+        method: "DELETE",
     }
     return await fetch2(url, requestOptions)
 }

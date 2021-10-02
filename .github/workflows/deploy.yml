@@ -223,25 +223,26 @@ jobs:
       run: |
         npm run build
 
-    - name: Publish to Github Pages
-      if: github.ref == 'refs/heads/master'
-      uses: JamesIves/github-pages-deploy-action@releases/v3
-      with:
-        GIT_CONFIG_NAME: Github Actions Deployer
-        GIT_CONFIG_EMAIL: foo@bar.com
-        ACCESS_TOKEN: ${{ secrets.GITHUB_PAGES_TOKEN }}
-        SINGLE_COMMIT: true
-        BASE_BRANCH: master           # The branch the action should deploy from.
-        BRANCH: gh-pages           # The branch the action should deploy to.
-        FOLDER: frontend/build           # The folder the action should deploy.
-
-#    - name: Deploy to GitHub Pages
+#    - name: Publish to Github Pages
 #      if: github.ref == 'refs/heads/master'
-#      uses: crazy-max/ghaction-github-pages@v2
+#      uses: JamesIves/github-pages-deploy-action@releases/v3
 #      with:
-#        committer: "Deployer Bot <deploy@foo.bar>"
-#        author: "Deployer Bot <deploy@foo.bar>"
-#        target_branch: gh-pages
-#        build_dir: frontend/build
-#      env:
-#        GH_PAT: ${{ secrets.GITHUB_PAGES_TOKEN }}
+#        GIT_CONFIG_NAME: Github Actions Deployer
+#        GIT_CONFIG_EMAIL: foo@bar.com
+#        ACCESS_TOKEN: ${{ secrets.GITHUB_PAGES_TOKEN }}
+#        SINGLE_COMMIT: true
+#        BASE_BRANCH: master           # The branch the action should deploy from.
+#        BRANCH: gh-pages           # The branch the action should deploy to.
+#        FOLDER: frontend/build           # The folder the action should deploy.
+
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/master'
+      uses: crazy-max/ghaction-github-pages@v2
+      with:
+        committer: Deployer Bot <deploy@foo.bar>
+        author: Deployer Bot <deploy@foo.bar>
+        allow_empty_commit: true
+        target_branch: gh-pages
+        build_dir: frontend/build
+      env:
+        GH_PAT: ${{ secrets.GITHUB_PAGES_TOKEN }}

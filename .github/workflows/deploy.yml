@@ -229,6 +229,7 @@ jobs:
       with:
         git-config-name: Github Actions Deployer
         git-config-email: foo@bar.com
+        silent: true
         ACCESS_TOKEN: ${{ secrets.GITHUB_PAGES_TOKEN }}
         BASE_BRANCH: master           # The branch the action should deploy from.
         BRANCH: gh-pages           # The branch the action should deploy to.

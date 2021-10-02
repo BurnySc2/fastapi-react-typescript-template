@@ -140,7 +140,7 @@ def start_frontend_dev_server(
     _ = subprocess.Popen(['npx', 'react-scripts', 'start'], cwd=frontend_folder, env=env)
 
     # Give it some time to create dev server and all (3?) node proccesses
-    time.sleep(3)
+    time.sleep(5)
     new_processes = get_pid('node') - currently_running_node_processes
     logger.info(f'New node processes: {new_processes}')
     NEWLY_CREATED_PROCESSES |= new_processes
